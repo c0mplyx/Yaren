@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Für meine Yaren ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fceaff;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .menuleiste {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            align-items: center;
+            padding: 24px 0 10px 0;
+            background: #fbe5fa;
+            border-bottom: 2px solid #e55381;
+        }
+        .menupunkt {
+            font-size: 1.2em;
+            color: #e55381;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            padding: 8px 20px;
+            border-radius: 10px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .menupunkt.active, .menupunkt:hover {
+            background: #e55381;
+            color: #fff;
+        }
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 60vh;
+        }
+        #text {
+            font-size: 1.5em;
+            margin: 30px 0;
+            color: #e55381;
+            text-align: center;
+            min-height: 3em;
+        }
+        button.spruch-btn {
+            font-size: 1.2em;
+            padding: 12px 24px;
+            background: #e55381;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 24px;
+            margin-left: 200px; /* Button nach rechts verschoben */
+        }
+        button.spruch-btn:hover {
+            background: #c13c63;
+        }
+        #datenbox {
+            max-width: 600px;
+            margin: 36px auto 0 auto;
+            background: #fff0f7;
+            border: 2px solid #e55381;
+            border-radius: 16px;
+            box-shadow: 0 0 12px #e5538150;
+            padding: 2em;
+            color: #7a5580;
+            font-size: 1.15em;
+        }
+        #cat-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+        }
+        #kitty {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            will-change: transform;
+            transition: none;
+            user-select: none;
+		}	
+			#bilderContent {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .galerie-bild {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto 24px auto;
+            border-radius: 20px;
+            box-shadow: 0 2px 16px #e5538150;
+            background: #fff;
+        }
+        @media (max-width: 600px) {
+            #kitty { width: 80px; height: 80px; }
+            #datenbox { font-size: 1em; padding: 1em; }
+            button.spruch-btn { margin-left: 12px; }
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 1em;
+            color: #7a5580;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="menuleiste">
+        <button class="menupunkt active" id="spruecheTab" onclick="zeigeTab('sprueche')">Sprüche</button>
+        <button class="menupunkt" id="datenTab" onclick="zeigeTab('daten')">Daten</button>
+        <button class="menupunkt" id="bilderTab" onclick="zeigeTab('bilder')">Bilder</button>
+        <button class="menupunkt" id="plaeneTab" onclick="zeigeTab('plaene')">Pläne</button>
+    </nav>
+    <div class="content-container">
+        <div id="spruecheContent">
+            <h1>Drück auf den Knopf, mein Herz 😊</h1>
+            <div id="text">Klick unten auf den Button!</div>
+            <button class="spruch-btn" onclick="zeigeZufallstext()">Klick mich!</button>
+        </div>
+        <div id="datenContent" style="display:none;">
+            <h1>Unsere Daten</h1>
+            <div id="datenbox">
+                <p><b>22.08.2025</b> An diesem Tag haben wir angefangen miteinander zu schreiben. An diesem Tag habe ich bereits den Funken gespürt und wusste, ich will dich um alles in der Welt.</p>
+                <p><b>14.09.2025</b> Dieses Datum ist das Datum von unserem ersten Treffen. Es war so spontan, aber wir haben richtig gespürt wie gut wir uns tun. Wie gern ich dich schon da geküsst hätte. Es war ein wunderschöner warmer Tag. Den werd ich niemals vergessen können.</p>
+                <p><b>15.09.2025</b> Dieses Datum hat nur ein wichtiges Zitat <i>"aich wen juckts"</i>. Es ging um Pokémon.</p>
+                <p><b>24.09.2025</b> Da hast du <i>"Fuck ass Pokémon Sticker"</i> gesagt.</p>
+                <p><b>27.09.2025</b> Das ist der Tag an dem du meine Liebe (wenn auch nur im Halbschlaf) erwidert hast. Ein so schöner Abend. Ich werde das Gefühl von Freude, Panik und Angst niemals vergessen. Ich war panisch, weil ich nicht wusste wie ich reagieren soll tbh. Und Angst vor dem, was alles auf uns zukommt, gepaart mit Neugier und Vorfreude.</p>
+                <p><b>04.10.2025</b> Unser zweites Treffen. Unser erster Kuss. Unsere ersten intimen Momente. Nicht viele Worte, umso mehr Gefühle. Genieß es. Ich liebe Dich.</p>
+                <p><b>05.10.2025</b> Unser Abschied, so viel Emotionen, so viel Vorfreude, so viel Trauer. Den Tränen nah und doch am lächeln. Ein echt schöner Abschied (können Abschiede schön sein?)</p>
+            </div>
+        </div>
+        <div id="bilderContent" style="display:none;">
+            <h1>Bilder</h1>
+			   <img class="galerie-bild" src="gemeinsam.jpeg" alt="">
+				<img class="galerie-bild" src="schwamm.jpeg" alt="">
+				<img class="galerie-bild" src="ramen.jpeg" alt="">
+				<img class="galerie-bild" src="liebe.jpeg" alt="">
+				<img class="galerie-bild" src="geschenke.jpeg" alt="">
+				<img class="galerie-bild" src="ersti.jpeg" alt=" ">
+				<img class="galerie-bild" src="247.jpeg" alt="️">
+            <!-- Hier kannst du später Bilder hinzufügen! -->
+        </div>
+        <div id="plaeneContent" style="display:none;">
+            <h1>Pläne</h1>
+            <!-- Hier kannst du später Pläne hinzufügen! -->
+        </div>
+    </div>
+    <div id="cat-container">
+        <img id="kitty" src="hello-kitty.png" alt="Hello Kitty">
+    </div>
+    <footer>Für dich von Mervan 💜</footer>
+    <script>
+        // Menü-Tab-Umschaltung
+        function zeigeTab(tab) {
+            document.getElementById('spruecheContent').style.display = tab === 'sprueche' ? 'block' : 'none';
+            document.getElementById('datenContent').style.display = tab === 'daten' ? 'block' : 'none';
+            document.getElementById('bilderContent').style.display = tab === 'bilder' ? 'block' : 'none';
+            document.getElementById('plaeneContent').style.display = tab === 'plaene' ? 'block' : 'none';
+            document.getElementById('spruecheTab').classList.toggle('active', tab === 'sprueche');
+            document.getElementById('datenTab').classList.toggle('active', tab === 'daten');
+            document.getElementById('bilderTab').classList.toggle('active', tab === 'bilder');
+            document.getElementById('plaeneTab').classList.toggle('active', tab === 'plaene');
+        }
+
+        // Sprüche
+        const texte = [
+             "Du bist mein Lieblingsmensch.",
+            "Ich liebe es, wenn du lachst.",
+            "Du machst graue Tage bunt.",
+            "Bleib mutig – du schaffst das.",
+            "Du bist mein kleiner Stern am Himmel.",
+            "Ich liebe deine Nähe.",
+            "Jeder Tag mit dir ist ein Geschenk.",
+            "Du bist mein sicherer Hafen.",
+            "Ich glaub an dich, egal was kommt.",
+            "Du bist das Beste in meinem Leben.",
+            "Liebe ist, wenn du bei mir bist.",
+            "Du bist mein Ruhepol.",
+            "Ich liebe deine Art zu träumen.",
+            "Du bist stärker, als du denkst.",
+            "Jeder Augenblick mit dir zählt.",
+            "Du machst alles leichter.",
+            "Ich liebe dein Herz.",
+            "Du bist mein Lieblingsglück.",
+            "Mach weiter – ich steh hinter dir.",
+            "Du bist mein kleines Wunder.",
+            "Ich liebe, wie du mich siehst.",
+            "Du bist mein Mut, wenn alles schwer wird.",
+            "Bleib wie du bist – echt und schön.",
+            "Du bist mein Sonnenschein.",
+            "Ich liebe deine Stimme.",
+            "Du machst mein Leben heller.",
+            "Alles wird gut – du bist da.",
+            "Du bist mein Lieblingskapitel.",
+            "Ich liebe dein Lächeln.",
+            "Du bist mein Herzstück.",
+            "Bleib stark – du bist nicht allein.",
+            "Ich liebe, wie du mich verstehst.",
+            "Du bist mein kleiner Frieden.",
+            "Jeder Schritt mit dir ist wertvoll.",
+            "Ich liebe dich still, aber intensiv.",
+            "Du bist mein Glücksmoment.",
+            "Bleib geduldig – alles kommt zur richtigen Zeit.",
+            "Du bist mein Lieblingsgedanke.",
+            "Ich liebe deine kleine Verrücktheit.",
+            "Du bist mein Zuhause in jeder Stadt.",
+            "Jeder Tag mit dir ist heller.",
+            "Ich liebe dich, einfach so.",
+            "Du bist mein Anker.",
+            "Bleib du selbst – das ist genug.",
+            "Du bist mein Licht im Dunkeln.",
+            "Ich liebe deine Stärke und Sanftheit.",
+            "Du machst mein Herz leicht.",
+            "Jeder Augenblick mit dir ist kostbar.",
+            "Ich liebe dich mehr, als Worte sagen.",
+            "Du bist mein Grund zu lächeln.",
+            "Du bist mein Lieblingsmoment im Tag.",
+            "Bleib echt – das ist deine Superkraft.",
+            "Ich liebe deine Stimme, egal was du sagst.",
+            "Du bist der schönste Zufall meines Lebens.",
+            "Mach dein Ding – ich steh hinter dir.",
+            "Du bist meine tägliche Inspiration.",
+            "Ich liebe, wie du denkst.",
+            "Jeder Tag mit dir zählt doppelt.",
+            "Du bist mein Grund, zu lächeln.",
+            "Vergiss nie, wie wertvoll du bist.",
+            "Ich liebe dich auch an chaotischen Tagen.",
+            "Du bist das Licht, das mich führt.",
+            "Mach weiter – das Beste kommt noch.",
+            "Du bist mein Lieblingsblick.",
+            "Ich liebe es, wenn du ehrlich bist.",
+            "Du hast ein Herz aus Gold.",
+            "Mit dir fühlt sich alles wie Zuhause an.",
+            "Du kannst alles schaffen, was du willst.",
+            "Ich liebe, wie du mich verstehst.",
+            "Du bist mein Frieden nach langen Tagen.",
+            "Bleib stark, du bist nicht allein.",
+            "Du bist das Lächeln in meinem Herzen.",
+            "Ich liebe deine Art, zu leben.",
+            "Alles ist leichter, wenn du da bist.",
+            "Du bist mein kleines Stück Glück.",
+            "Ich liebe, wie du mich ansiehst.",
+            "Auch Fehler machen dich menschlich – und schön.",
+            "Du bist mein Lieblingsmensch, jeden Tag neu.",
+            "Ich glaub an dein Herz.",
+            "Du bist meine schönste Entscheidung.",
+            "Mach Pausen – du darfst atmen.",
+            "Ich liebe dich leise, aber konstant.",
+            "Du bist mein Sonnenschein an grauen Tagen.",
+            "Auch langsames Wachsen ist Wachsen.",
+            "Du bist mein Kompass, wenn ich mich verlauf.",
+            "Ich liebe, wie du da bist – echt und klar.",
+            "Sei stolz auf dich, du hast schon viel geschafft.",
+            "Du bist mein Lächeln, wenn’s schwer wird.",
+            "Ich liebe dich – immer ein bisschen mehr.",
+            "Du bist mein Herz in Menschengestalt.",
+            "Glaube an Wunder – du bist eines.",
+            "Ich liebe deine kleinen Macken.",
+            "Du bist genug, so wie du bist.",
+            "Mit dir wird selbst Stille laut vor Liebe.",
+            "Du bist mein Lieblingsgedanke vorm Einschlafen.",
+            "Ich liebe deine Stärke.",
+            "Du bringst Sonne in meine Nacht.",
+            "Bleib dir treu – du bist einzigartig.",
+            "Du bist der schönste Grund, geduldig zu sein.",
+            "Ich liebe dich – heute, morgen, immer.",
+            "Du bist mein Lieblingsgefühl.",
+            "Auch schwere Tage gehen vorbei.",
+            "Ich liebe dein Lächeln mehr als jeden Sonnenuntergang.",
+            "Du bist mein sicherer Ort.",
+            "Hör nie auf, du selbst zu sein.",
+            "Du gibst meinem Leben Farbe.",
+            "Ich glaub an dich, immer.",
+            "Mit dir wird’s nie langweilig.",
+            "Du bist mein bester Zufall.",
+            "Jeder Tag mit dir ist ein Geschenk.",
+            "Liebe heißt, dich jeden Tag neu zu wählen.",
+            "Du machst mich stolz, ohne es zu merken.",
+            "Du bist stärker, als du denkst.",
+            "Ich liebe, wie du liebst.",
+            "Bleib mutig, auch wenn’s schwer wird.",
+            "Du bist mein kleines Stück Himmel.",
+            "Ich bin glücklich, weil’s dich gibt.",
+            "Alles beginnt mit einem Lächeln – deins.",
+            "Du bringst Licht in meine Gedanken.",
+            "Ich liebe die Ruhe, wenn du da bist.",
+            "Mach weiter, auch wenn keiner klatscht.",
+            "Du bist mein Lieblingsgrund, aufzuwachen.",
+            "Ich liebe deine Art, die Welt zu sehen.",
+            "Lass dich nicht stressen – du machst das super.",
+            "Du bist das schönste Kapitel in meinem Leben.",
+            "Ich liebe dich mehr, als du ahnst.",
+            "Du bist die Antwort auf so viele meiner Fragen.",
+            "Bleib bei dir – du bist genug.",
+            "Ich will dich heute, morgen, immer.",
+            "Du bist mein Lieblingssong.",
+            "Alles wird gut, so wie du bist.",
+            "Ich liebe dein Herz, weil’s so echt ist.",
+            "Wenn du fällst, steh auf – ich bin da.",
+            "Du bist mein Anker in wilden Zeiten.",
+            "Ich liebe es, mit dir zu lachen.",
+            "Du bist mein kleines Wunder im Alltag.",
+            "Sei stolz auf dich – ich bin’s auch.",
+            "Du bist schöner, wenn du lachst.",
+            "Ich liebe dich, ohne Wenn und Aber.",
+            "Mit dir ist jede Sekunde wertvoll.",
+            "Du bist mein Licht, wenn’s dunkel wird.",
+            "Glaube an das Gute – es ist in dir.",
+            "Ich liebe, wie du träumst.",
+            "Du machst alles besser, einfach durch dein Dasein.",
+            "Auch kleine Schritte sind Fortschritt.",
+            "Du bist mein Lieblingsplan.",
+            "Ich liebe dein echtes Ich.",
+            "Wenn’s schwer wird, halt dich an mir fest.",
+            "Du bist das schönste „Wir“, das ich kenne.",
+            "Ich will dich – nicht nur für jetzt, sondern für immer.",
+            "Du bist mein Lieblingsgedanke am Tag.",
+            "Wenn du fällst, steh wieder auf – ich helf dir dabei.",
+            "Mit dir fühlt sich alles richtig an.",
+            "Liebe ist kein Wort, sondern dein Blick.",
+            "Du machst aus Alltag ein Abenteuer.",
+            "Kein Traum ist zu groß, wenn du dran glaubst.",
+            "Ich bin dankbar für jedes kleine Stück von uns.",
+            "Du bringst Ruhe in mein Chaos.",
+            "Heute ist ein guter Tag, um zu lieben.",
+            "Du bist der Grund, warum mein Herz lacht.",
+            "Auch kleine Siege sind wichtig.",
+            "Ich liebe, wie du mich ansiehst.",
+            "Manchmal ist dein Lächeln alles, was ich brauch.",
+            "Du gibst mir Kraft, selbst wenn du schweigst.",
+            "Du bist mein Zuhause in jeder Stadt.",
+            "Lass los, was dich runterzieht – ich fang dich auf.",
+            "Ich glaub an dich, auch wenn du’s grad nicht tust.",
+            "Mit dir ist selbst Stille schön.",
+            "Du bist mein Lieblingsmensch – immer noch.",
+            "Liebe ist, wenn du mein erster Gedanke bist.",
+            "Du schaffst das, egal wie schwer’s wirkt.",
+            "Ich liebe die Ruhe, wenn du neben mir bist.",
+            "Ein Tag ohne dich ist nur halb so hell.",
+            "Du bist meine schönste Ablenkung.",
+            "Heute ist dein Tag – mach ihn zu deinem Besten.",
+            "Du bist die schönste Art, „Zuhause“ zu sagen.",
+            "Auch Regen ist schön, wenn du dabei bist.",
+            "Du bist mein Mut in schwachen Momenten.",
+            "Ich will dich, nicht nur heute, sondern immer.",
+            "Du kannst stolz auf dich sein.",
+            "Ich liebe es, dass du echt bist.",
+            "Deine Nähe ist mein Lieblingsort.",
+            "Hör auf dein Herz – es weiß den Weg.",
+            "Du bist mein Lieblingsglück.",
+            "Ich lieb dich, ohne Grund, einfach so.",
+            "Du hast alles, was du brauchst, schon in dir.",
+            "Mit dir ist jeder Augenblick besonders.",
+            "Ich mag dich mehr, als Worte sagen können.",
+            "Du bist mein Halt, wenn alles wackelt.",
+            "Heute ist ein guter Tag zum Lächeln.",
+            "Du machst das Leben leichter.",
+            "Ich liebe es, wie du die Welt siehst.",
+            "Bleib, wie du bist – echt und wunderbar.",
+            "Ich glaub an dein Herz.",
+            "Du bist mein kleiner Frieden in dieser großen Welt.",
+            "Nichts ist schöner, als du, wenn du lachst.",
+            "Gib niemals auf – ich bin bei dir.",
+            "Du bist das Beste, was ich finden konnte.",
+            "Dein Mut macht mich stolz.",
+            "Ich liebe dich – jeden Tag ein bisschen mehr.",
+            "Manchmal reicht ein Mensch, um die ganze Welt heller zu machen – und für mich bist du dieser Mensch.",
+            "Ich liebe dich nicht, weil du perfekt bist, sondern weil du echt bist – mit allen Ecken, Kanten und dem schönsten Herzen, das ich kenne.",
+            "Es ist egal, wie weit wir kommen oder was passiert – solange wir füreinander kämpfen, haben wir schon gewonnen.",
+            "Du gibst mir das Gefühl, dass ich alles schaffen kann, solange du an meiner Seite bist.",
+            "Auch wenn das Leben stürmisch ist – mit dir hab ich gelernt, im Regen zu tanzen, statt auf Sonne zu warten.",
+            "Ich möchte dich nicht nur heute lieben, sondern an allen Tagen, an denen du dich selbst schwer lieben kannst.",
+            "Du bist mein sicherer Ort in einer Welt, die sich zu schnell dreht.",
+            "Wenn du zweifelst, erinnere dich daran, wie weit du schon gekommen bist – und dass du niemals allein kämpfst.",
+            "Liebe ist nicht immer laut – manchmal ist sie einfach das leise „Ich bin da“, wenn du’s am meisten brauchst.",
+            "Ich liebe dich dafür, dass du mich nicht verändern willst, sondern dass du mich sehen lässt, wer ich wirklich bin.",
+            "Du bist mein Lieblingsmoment jeden Tag.",
+            "Egal wie schwer’s wird – ich bin bei dir.",
+            "Dein Lächeln ist meine tägliche Motivation.",
+            "Mit dir fühlt sich alles leichter an.",
+            "Glaub an dich so, wie ich an dich glaube.",
+            "Du machst graue Tage bunt.",
+            "Ich liebe, wie du das Leben schöner machst.",
+            "Auch Wolken sehen gut aus, wenn du lachst.",
+            "Kein Ziel ist zu weit, wenn du’s mit Herz angehst.",
+            "Du bist mein Ruhepunkt in allem Chaos.",
+            "Kleine Schritte zählen auch – Hauptsache weitergehen.",
+            "Mit dir fühlt sich selbst Montag gut an.",
+            "Du bist meine schönste Gewohnheit.",
+            "Du kannst mehr, als du dir zutraust.",
+            "Ich liebe dich nicht nur – ich bewundere dich.",
+            "Heute ist ein guter Tag, um zu strahlen.",
+            "Alles, was du brauchst, ist schon in dir.",
+            "Wenn du fällst, halt ich dich fest.",
+            "Dein Mut steckt an.",
+            "Mit dir ist selbst Schweigen laut vor Glück.",
+            "Jeder neue Tag ist eine Chance – nutz ihn.",
+            "Ich bin stolz auf dich, egal was kommt.",
+            "Du bist mein Zuhause, egal wo ich bin.",
+            "Glaube an Wunder – ich tu’s, seit ich dich kenne.",
+            "Du bist stärker, als du denkst.",
+            "Ich liebe, wie echt du bist.",
+            "Mach heute das, wofür du morgen dankbar bist.",
+            "Du bringst Sonne in jeden Raum.",
+            "Alles wird gut – besonders mit dir.",
+            "Du bist mein Lieblingsmensch, jeden Tag neu.",
+            "Hör nie auf, an dich zu glauben.",
+            "Bei dir fühlt sich alles richtig an.",
+            "Du brauchst keinen Filter – du bist echt schön.",
+            "Jeder Traum beginnt mit dem Mut, ihn zu träumen.",
+            "Ich liebe es, wenn du lachst – da scheint die Welt heller.",
+            "Du bist mein Zufall mit Absicht.",
+            "Auch Pausen sind Fortschritt.",
+            "Mit dir wird selbst Alltag magisch.",
+            "Du bist das Beste, was mir passieren konnte.",
+            "Glaube an kleine Schritte – sie bringen dich weit.",
+            "Ich liebe dein Herz – nicht deine Perfektion.",
+            "Auch Sterne brauchen Dunkelheit, um zu leuchten.",
+            "Alles, was zählt, ist Liebe und Mut.",
+            "Du bist mein Grund, nie aufzugeben.",
+            "Mach’s wie die Sonne – strahl einfach weiter.",
+            "Ich will mit dir wachsen, nicht stehen bleiben.",
+            "Du bist mein Lieblingskapitel.",
+            "Wenn du lachst, vergess ich die Welt.",
+            "Du machst mich zu einer besseren Version von mir.",
+            "Du bist genug. Immer."
+        ];
+        function zeigeZufallstext() {
+            const index = Math.floor(Math.random() * texte.length);
+            document.getElementById('text').textContent = texte[index];
+        }
+
+        // Bildwechsel-Array
+        const bilder = [
+            "hello-kitty.png",
+            "miffy.png",
+            "dylan.jpg",
+            "tiger.png",
+            "hai.jpg",
+            "panda.jpg",
+            "snoopy.jpg", 
+			"fenerbahce.jpg", 
+			"kd.png", 
+			"fler.webp", 
+			"freeway.jpg", 
+        ];
+        const kitty = document.getElementById("kitty");
+
+        function getKittySize() {
+            const style = window.getComputedStyle(kitty);
+            return {
+                w: parseInt(style.width, 10),
+                h: parseInt(style.height, 10)
+            };
+        }
+
+        let {w: kittyW, h: kittyH} = getKittySize();
+        let x = Math.random() * (window.innerWidth - kittyW);
+        let y = Math.random() * (window.innerHeight - kittyH);
+
+        let dx = 2.5, dy = 2;
+        let dirX = Math.random() > 0.5 ? 1 : -1;
+        let dirY = Math.random() > 0.5 ? 1 : -1;
+
+        // Für Bildwechsel nach jedem Abpraller
+        function wechselBild() {
+            let aktuell = kitty.src.split("/").pop();
+            let neuesBild;
+            do {
+                neuesBild = bilder[Math.floor(Math.random() * bilder.length)];
+            } while (neuesBild === aktuell && bilder.length > 1);
+            kitty.src = neuesBild;
+        }
+
+        function bounceKitty() {
+            let {w: kittyW, h: kittyH} = getKittySize();
+            const maxW = window.innerWidth;
+            const maxH = window.innerHeight;
+
+            let bounced = false;
+
+            x += dx * dirX;
+            y += dy * dirY;
+
+            // Links/Rechts
+            if (x <= 0) {
+                x = 0;
+                dirX = 1;
+                kitty.style.transform = "scaleX(1)";
+                bounced = true;
+            }
+            if (x + kittyW >= maxW) {
+                x = maxW - kittyW;
+                dirX = -1;
+                kitty.style.transform = "scaleX(-1)";
+                bounced = true;
+            }
+            // Oben/Unten
+            if (y <= 0) {
+                y = 0;
+                dirY = 1;
+                bounced = true;
+            }
+            if (y + kittyH >= maxH) {
+                y = maxH - kittyH;
+                dirY = -1;
+                bounced = true;
+            }
+
+            if (bounced) wechselBild();
+
+            kitty.style.left = x + "px";
+            kitty.style.top = y + "px";
+            requestAnimationFrame(bounceKitty);
+        }
+
+        window.addEventListener("resize", () => {
+            let {w: newW, h: newH} = getKittySize();
+            x = Math.min(x, window.innerWidth - newW);
+            y = Math.min(y, window.innerHeight - newH);
+        });
+
+        bounceKitty();
+    </script>
+</body>
+</html>
