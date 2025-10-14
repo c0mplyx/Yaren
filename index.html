@@ -15,6 +15,23 @@
             min-height: 100vh;
         }
         
+        /* ZÄHLER-STYLING (NEU) */
+        #counter-area {
+            text-align: center;
+            font-size: 1.2em;
+            color: #7a5580; /* Dunkelviolett */
+            font-weight: bold;
+            padding: 10px 0;
+            background: #fbe5fa; /* Leichter Hintergrund */
+            border-bottom: 2px solid #e5538150;
+        }
+        #lovecounter {
+            color: #e55381; /* Knalliges Pink */
+            display: block; /* Macht den Counter zur eigenen Zeile auf Handys */
+            font-size: 1.1em;
+            margin-top: 5px;
+        }
+        
         .content-container {
             padding-top: 20px;
             display: flex;
@@ -22,19 +39,18 @@
             align-items: center;
             justify-content: flex-start;
             min-height: 60vh;
-            /* Übergang für den Container selbst ist nicht nötig, da die Tabs animieren */
         }
         
-        /* 💡 KORREKTUR FÜR SMOOTHEN TAB-WECHSEL (CSS-Basis) */
+        /* KORREKTUR FÜR SMOOTHEN TAB-WECHSEL (CSS-Basis) */
         .tab-content {
             opacity: 0;
-            max-height: 0; /* Versteckt den Inhalt ohne display:none */
-            overflow: hidden; /* Verhindert Scrollbalken, wenn max-height niedrig ist */
+            max-height: 0; 
+            overflow: hidden; 
             transition: opacity 0.4s ease-in-out, max-height 0.4s ease-in-out; 
             
             width: 100%;            
             text-align: center;
-            display: flex; /* Muss immer 'flex' sein, damit es bei max-height=0 verschwindet */
+            display: flex; 
             flex-direction: column; 
             align-items: center;  
         }
@@ -42,7 +58,7 @@
         /* Zustand für den AKTIVEN TAB */
         .tab-content.active {
             opacity: 1;
-            max-height: 5000px; /* Muss ein Wert sein, der immer höher ist als der Inhalt */
+            max-height: 5000px; /* Muss immer höher sein als der Inhalt */
         }
         
         /* Basis-Styles für Menü */
@@ -191,7 +207,6 @@
             pointer-events: none; 
             z-index: -1; 
         }
-        /* Style für die zufällig generierten Herzen */
         .dynamic-heart {
             position: absolute;
             font-size: 40px; 
@@ -200,15 +215,12 @@
             opacity: 0; 
             animation: heart-fade-pulse 4s forwards; 
         }
-
-        /* Keyframes für Fade-In/Pulse/Fade-Out */
         @keyframes heart-fade-pulse {
             0%   { transform: scale(0.5); opacity: 0; }
             20%  { transform: scale(1.0); opacity: 0.6; } 
             80%  { transform: scale(1.1); opacity: 0.6; } 
             100% { transform: scale(1.5); opacity: 0; } 
         }
-
 
         /* Klick-Herz-Animation */
         .click-heart {
@@ -270,6 +282,9 @@
         <button class="menupunkt" id="plaeneTab" onclick="zeigeTab('plaene')">Pläne</button>
     </nav>
     
+    <div id="counter-area">
+        Mervan und Yaren: <span id="lovecounter"></span>
+    </div>
     <div class="content-container">
         <div id="spruecheContent" class="tab-content active">
             <h1>Drück auf den Knopf, mein Herz 😊</h1>
@@ -315,9 +330,72 @@
         // JAVASCRIPT LOGIK
         // =========================================================================
 
+        // --- 1. ECHTZEIT-COUNTER LOGIK ---
+        // Das Startdatum der Liebe
+        const START_DATE = new Date('2025-08-22T00:00:00'); 
+
+        function updateLoveCounter() {
+            const now = new Date();
+            const diff = now.getTime() - START_DATE.getTime(); 
+
+            if (diff < 0) {
+                 document.getElementById('lovecounter').textContent = "Bald ist es soweit!";
+                 return;
+            }
+
+            const msPerSecond = 1000;
+            const msPerMinute = msPerSecond * 60;
+            const msPerHour = msPerMinute * 60;
+
+            let totalSeconds = Math.floor(diff / msPerSecond);
+            let seconds = totalSeconds % 60;
+
+            let totalMinutes = Math.floor(totalSeconds / 60);
+            let minutes = totalMinutes % 60;
+
+            let totalHours = Math.floor(totalMinutes / 60);
+            let hours = totalHours % 24;
+
+            let years = now.getFullYear() - START_DATE.getFullYear();
+            let months = now.getMonth() - START_DATE.getMonth();
+            let remainingDays;
+            
+            // Korrektur für Monate und Jahre
+            if (months < 0 || (months === 0 && now.getDate() < START_DATE.getDate())) {
+                years--;
+                months += 12;
+            }
+            
+            // Berechnung der verbleibenden Tage
+            if (now.getDate() < START_DATE.getDate()) {
+                months--;
+                const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                remainingDays = (lastMonth - START_DATE.getDate()) + now.getDate();
+            } else {
+                remainingDays = now.getDate() - START_DATE.getDate();
+            }
+            
+            let weeks = Math.floor(remainingDays / 7);
+            remainingDays = remainingDays % 7;
+
+
+            // Formatierung der Ausgabe
+            const counterText = 
+                  `${years} Jahr${years !== 1 ? 'e' : ''}, ` +
+                  `${months} Monat${months !== 1 ? 'e' : ''}, ` +
+                  `${weeks} Woche${weeks !== 1 ? 'n' : ''}, ` +
+                  `${remainingDays} Tag${remainingDays !== 1 ? 'e' : ''}, ` +
+                  `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            document.getElementById('lovecounter').textContent = counterText;
+        }
+        
+        // Timer für die Sekundengenaue Aktualisierung
+        setInterval(updateLoveCounter, 1000); 
+
+        // --- 2. TAB-LOGIK ---
         let aktuellerTab = 'sprueche';
 
-        // 1. Geschmeidige Menü-Übergänge (FINAL)
         function zeigeTab(neuerTabName) {
             if (aktuellerTab === neuerTabName) return; 
 
@@ -326,19 +404,14 @@
             const tabs = document.querySelectorAll('.menupunkt');
             const footer = document.querySelector('footer');
 
-            // 1. Alten Content deaktivieren (Führt zu Fade-Out und max-height: 0)
             if (alterContent) {
                 alterContent.classList.remove('active');
             }
             
-            // 2. Neuen Content aktivieren (Führt zu Fade-In und max-height: 5000px)
             if (neuerContent) {
-                 // Wir warten kurz (400ms), damit der alte Content wirklich ausgeblendet ist, bevor der neue Content den Platz einnimmt.
-                 // In diesem Fall lassen wir die CSS-Transition die Arbeit machen und wechseln die Klasse sofort.
                  neuerContent.classList.add('active');
             }
             
-            // 3. Menü-Buttons und Footer aktualisieren
             tabs.forEach(tab => tab.classList.remove('active'));
             document.getElementById(neuerTabName + 'Tab').classList.add('active');
 
@@ -348,15 +421,13 @@
                 footer.classList.remove('footer-daten-active');
             }
 
-            // 4. Aktuellen Tab speichern
             aktuellerTab = neuerTabName;
         }
         
         // Initialer Aufruf beim Laden der Seite
         document.addEventListener('DOMContentLoaded', () => {
-            // Alle Tabs bis auf den ersten haben bereits opacity:0 und max-height:0
+            updateLoveCounter(); 
             
-            // Welcome Overlay Fade-Out
             const overlay = document.getElementById('welcomeOverlay');
             setTimeout(() => {
                 overlay.style.opacity = '0';
@@ -365,11 +436,11 @@
                 }, 1500);
             }, 2000);
             
-            // Starte die dynamischen Herzen
             startDynamicHearts();
+            bounceKitty();
         });
 
-        // 2. Dynamische Hintergrund-Herzen Logik (Herz-Frequenz erhöht)
+        // --- 3. DYNAMISCHE HERZEN LOGIK ---
         function generateRandomHeart() {
             const container = document.getElementById('backgroundHearts');
             const heart = document.createElement('span');
@@ -393,21 +464,17 @@
             });
         }
         
-        // Timer, der regelmäßig neue Herzen erstellt
         let heartInterval;
         function startDynamicHearts() {
-            // Startet mit 10 Herzen (vorher 5)
             for (let i = 0; i < 10; i++) {
                 setTimeout(generateRandomHeart, Math.random() * 2000); 
             }
-            
-            // Danach alle 500ms bis 1000ms (vorher 1000ms bis 2000ms)
             heartInterval = setInterval(() => {
                 generateRandomHeart();
             }, Math.random() * 500 + 500); 
         }
         
-        // Klick-Herz-Effekt (Unverändert)
+        // --- 4. KLICK-HERZ-EFFEKT ---
         document.addEventListener('click', (e) => {
             const heart = document.createElement('span');
             heart.className = 'click-heart';
@@ -422,10 +489,10 @@
             });
         });
 
-        // Sprüche Logik (Unverändert)
+        // --- 5. SPRÜCHE LOGIK (HIER MUSST DU DEINE 157 SPRÜCHE EINFÜGEN!) ---
         const texte = [
-            // FÜGE HIER ALLE DEINE 157 SPRÜCHE WIEDER EIN!
-            "Du bist mein Lieblingsmensch.",
+            // ❗❗ BITTE HIER ALLE DEINE SPRÜCHE WIEDER EINFÜGEN (in Anführungszeichen, mit Komma) ❗❗
+           "Du bist mein Lieblingsmensch.",
             "Ich liebe es, wenn du lachst.",
             "Du machst graue Tage bunt.",
             "Bleib mutig – du schaffst das.",
@@ -691,7 +758,7 @@
             document.getElementById('text').textContent = texte[index];
         }
 
-        // Hello Kitty Bounce (Unverändert)
+        // --- 6. BOUNCING KITTY LOGIK ---
         const bilder = [
             "hello-kitty.png", "miffy.png", "dylan.jpg", "tiger.png", "hai.jpg", "panda.jpg", 
             "snoopy.jpg", "fenerbahce.jpg", "kd.png", "fler.webp", "freeway.jpg"
@@ -744,8 +811,6 @@
             x = Math.min(x, window.innerWidth - newW);
             y = Math.min(y, window.innerHeight - newH);
         });
-        bounceKitty();
     </script>
 </body>
 </html>
-
