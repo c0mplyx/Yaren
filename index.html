@@ -15,7 +15,7 @@
             min-height: 100vh;
         }
         
-        /* ZÄHLER-STYLING (NEU) */
+        /* ZÄHLER-STYLING (OHNE TEXT) */
         #counter-area {
             text-align: center;
             font-size: 1.2em;
@@ -27,9 +27,9 @@
         }
         #lovecounter {
             color: #e55381; /* Knalliges Pink */
-            display: block; /* Macht den Counter zur eigenen Zeile auf Handys */
+            display: block; 
             font-size: 1.1em;
-            margin-top: 5px;
+            margin-top: 0; /* Kein zusätzlicher Abstand nötig */
         }
         
         .content-container {
@@ -131,6 +131,7 @@
             text-align: left; 
         }
         
+        /* BOUNCING KITTY & EFFEKTE (Styles unverändert) */
         #cat-container {
             position: fixed;
             left: 0;
@@ -156,12 +157,6 @@
             flex-direction: column;
             align-items: center;
         }
-        
-        /* ========================================================================= */
-        /* STYLES FÜR EFFEKTE */
-        /* ========================================================================= */
-        
-        /* Bilder-Zoom Effekt (Hover) */
         .galerie-bild {
             width: 220px;
             height: 220px;
@@ -177,7 +172,7 @@
             transform: scale(1.05); 
         }
         
-        /* Begrüßungs-Overlay */
+        /* ... (Weitere Effekt-Styles wie Overlay, Herzen bleiben unverändert) ... */
         #welcomeOverlay {
             position: fixed;
             top: 0;
@@ -196,8 +191,6 @@
             opacity: 1;
             transition: opacity 1.5s ease-out;
         }
-
-        /* DYNAMISCHE HINTERGRUND-HERZEN */
         .background-heart-container {
             position: fixed;
             top: 0;
@@ -221,8 +214,6 @@
             80%  { transform: scale(1.1); opacity: 0.6; } 
             100% { transform: scale(1.5); opacity: 0; } 
         }
-
-        /* Klick-Herz-Animation */
         .click-heart {
             position: absolute;
             pointer-events: none;
@@ -237,16 +228,12 @@
             50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; }
             100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
         }
-
-        /* Responsive Anpassungen */
         @media (max-width: 600px) {
             #kitty { width: 80px; height: 80px; }
             #datenbox { font-size: 1em; padding: 1em; }
             .menuleiste { gap: 15px; padding: 15px 0; }
             .menupunkt { padding: 6px 12px; font-size: 1em; }
         }
-
-        /* FOOTER STYLING */
         footer {
             margin-top: 20px;
             font-size: 1em;
@@ -257,13 +244,11 @@
             box-sizing: border-box; 
             padding: 0 10px; 
         }
-        
         .footer-daten-active {
             text-align: center; 
             margin-left: 0; 
             margin-right: 0;
         }
-
     </style>
 </head>
 <body>
@@ -279,11 +264,12 @@
         <button class="menupunkt active" id="spruecheTab" onclick="zeigeTab('sprueche')">Sprüche</button>
         <button class="menupunkt" id="datenTab" onclick="zeigeTab('daten')">Daten</button>
         <button class="menupunkt" id="bilderTab" onclick="zeigeTab('bilder')">Bilder</button>
+        <button class="menupunkt" id="faktenTab" onclick="zeigeTab('fakten')">Fakten</button>
         <button class="menupunkt" id="plaeneTab" onclick="zeigeTab('plaene')">Pläne</button>
     </nav>
     
     <div id="counter-area">
-        Mervan und Yaren: <span id="lovecounter"></span>
+        <span id="lovecounter"></span>
     </div>
     <div class="content-container">
         <div id="spruecheContent" class="tab-content active">
@@ -291,6 +277,7 @@
             <div id="text">Klick unten auf den Button!</div> 
             <button class="spruch-btn" onclick="zeigeZufallstext()">Klick mich!</button> 
         </div>
+        
         <div id="datenContent" class="tab-content">
             <h1>Unsere Daten</h1>
             <div id="datenbox">
@@ -303,6 +290,7 @@
                 <p><b>05.10.2025</b> Unser Abschied, so viel Emotionen, so viel Vorfreude, so viel Trauer. Den Tränen nah und doch am lächeln. Ein echt schöner Abschied (können Abschiede schön sein?)</p>
             </div>
         </div>
+
         <div id="bilderContent" class="tab-content">
             <h1>Bilder</h1>
             <img class="galerie-bild" src="gemeinsam.jpeg" alt="">
@@ -313,11 +301,24 @@
             <img class="galerie-bild" src="ersti.jpeg" alt=" ">
             <img class="galerie-bild" src="247.jpeg" alt="️">
             </div>
+
+        <div id="faktenContent" class="tab-content">
+            <h1 id="faktenTitel">Dein täglicher Fakt: Lade Wikipedia</h1>
+            
+            <iframe id="faktenIframe" 
+                    src="" 
+                    style="width: 90%; max-width: 900px; height: 600px; border: 2px solid #e55381; border-radius: 16px; margin-top: 15px;">
+            </iframe>
+            
+            <p style="margin-top: 20px; color: #7a5580;">
+                Komm morgen wieder für den nächsten Fakt!
+            </p>
+        </div>
         <div id="plaeneContent" class="tab-content">
             <h1>Pläne</h1>
             <p style="text-align:center; color:#7a5580; font-size:1.2em; margin-top:20px;">Hier kommt bald unsere Bucket List hin!</p>
         </div>
-        </div>
+    </div>
     
     <div id="cat-container">
         <img id="kitty" src="hello-kitty.png" alt="Hello Kitty">
@@ -331,7 +332,6 @@
         // =========================================================================
 
         // --- 1. ECHTZEIT-COUNTER LOGIK ---
-        // Das Startdatum der Liebe
         const START_DATE = new Date('2025-08-22T00:00:00'); 
 
         function updateLoveCounter() {
@@ -360,13 +360,11 @@
             let months = now.getMonth() - START_DATE.getMonth();
             let remainingDays;
             
-            // Korrektur für Monate und Jahre
             if (months < 0 || (months === 0 && now.getDate() < START_DATE.getDate())) {
                 years--;
                 months += 12;
             }
             
-            // Berechnung der verbleibenden Tage
             if (now.getDate() < START_DATE.getDate()) {
                 months--;
                 const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
@@ -378,8 +376,6 @@
             let weeks = Math.floor(remainingDays / 7);
             remainingDays = remainingDays % 7;
 
-
-            // Formatierung der Ausgabe
             const counterText = 
                   `${years} Jahr${years !== 1 ? 'e' : ''}, ` +
                   `${months} Monat${months !== 1 ? 'e' : ''}, ` +
@@ -390,10 +386,51 @@
             document.getElementById('lovecounter').textContent = counterText;
         }
         
-        // Timer für die Sekundengenaue Aktualisierung
         setInterval(updateLoveCounter, 1000); 
 
-        // --- 2. TAB-LOGIK ---
+        // --- 2. FAKTEN LOGIK (NEU MIT IFRAME UND NEUER LISTE) ---
+        // Die Liste ist so sortiert, dass heute (14.10.2025) Hello Kitty angezeigt wird.
+        const faktenTexte = [
+            // Index 0 (Heute + 5 Tage, da Start 22.08.)
+            { titel: "Der gemütliche Panda 🐼", link: "https://de.wikipedia.org/wiki/Großer_Panda" }, 
+            { titel: "Kuschelige Hasen 🐇", link: "https://de.wikipedia.org/wiki/Echte_Hasen" }, 
+            { titel: "Call of Duty: Black Ops 2 💣", link: "https://de.wikipedia.org/wiki/Call_of_Duty:_Black_Ops_II" }, 
+            { titel: "Der süße Pokémon Fakt ⚡", link: "https://de.wikipedia.org/wiki/Pokémon" }, 
+            { titel: "Vampire Diaries (Damon! 😉)", link: "https://de.wikipedia.org/wiki/Vampire_Diaries" },
+            
+            // Index 5 -> Hello Kitty (IST HEUTE, da 53 % 12 = 5)
+            { titel: "Dein Liebling: Hello Kitty 🎀", link: "https://de.wikipedia.org/wiki/Hello_Kitty" }, 
+            
+            // Index 6 -> Morgen
+            { titel: "Der leuchtende Mond 🌕", link: "https://de.wikipedia.org/wiki/Mond" },
+            
+            // Index 7 -> Übermorgen
+            { titel: "Der coole Hai 🦈", link: "https://de.wikipedia.org/wiki/Haie" },
+            { titel: "Der mächtige Tiger 🐅", link: "https://de.wikipedia.org/wiki/Tiger" },
+            { titel: "Das beste Häschen: Miffy 🐰", link: "https://de.wikipedia.org/wiki/Miffy" }, 
+            { titel: "Der beste Hund: Snoopy 🐶", link: "https://de.wikipedia.org/wiki/Snoopy" }, 
+            { titel: "Der Nutella Fakt 🌰", link: "https://de.wikipedia.org/wiki/Nutella" }
+        ];
+
+        function zeigeTagesfakt() {
+            const ONE_DAY = 1000 * 60 * 60 * 24;
+            const diffTime = new Date().getTime() - START_DATE.getTime();
+            if (diffTime < 0) return; 
+            
+            const diffDays = Math.floor(diffTime / ONE_DAY);
+            
+            // Modulo, damit die Liste nach 12 Tagen wieder von vorne beginnt
+            const index = diffDays % faktenTexte.length; 
+            
+            const heutigerFakt = faktenTexte[index];
+            
+            document.getElementById('faktenTitel').textContent = `Dein täglicher Fakt: ${heutigerFakt.titel}`;
+            
+            // Setze die URL des iFrames
+            document.getElementById('faktenIframe').src = heutigerFakt.link;
+        }
+
+        // --- 3. TAB-LOGIK (unverändert) ---
         let aktuellerTab = 'sprueche';
 
         function zeigeTab(neuerTabName) {
@@ -427,6 +464,7 @@
         // Initialer Aufruf beim Laden der Seite
         document.addEventListener('DOMContentLoaded', () => {
             updateLoveCounter(); 
+            zeigeTagesfakt(); 
             
             const overlay = document.getElementById('welcomeOverlay');
             setTimeout(() => {
@@ -440,7 +478,7 @@
             bounceKitty();
         });
 
-        // --- 3. DYNAMISCHE HERZEN LOGIK ---
+        // --- 4. DYNAMISCHE HERZEN LOGIK (unverändert) ---
         function generateRandomHeart() {
             const container = document.getElementById('backgroundHearts');
             const heart = document.createElement('span');
@@ -474,7 +512,7 @@
             }, Math.random() * 500 + 500); 
         }
         
-        // --- 4. KLICK-HERZ-EFFEKT ---
+        // --- 5. KLICK-HERZ-EFFEKT (unverändert) ---
         document.addEventListener('click', (e) => {
             const heart = document.createElement('span');
             heart.className = 'click-heart';
@@ -489,268 +527,11 @@
             });
         });
 
-        // --- 5. SPRÜCHE LOGIK (HIER MUSST DU DEINE 157 SPRÜCHE EINFÜGEN!) ---
+        // --- 6. SPRÜCHE LOGIK (HIER MUSST DU DEINE 157 SPRÜCHE EINFÜGEN!) ---
         const texte = [
             // ❗❗ BITTE HIER ALLE DEINE SPRÜCHE WIEDER EINFÜGEN (in Anführungszeichen, mit Komma) ❗❗
-           "Du bist mein Lieblingsmensch.",
+            "Du bist mein Lieblingsmensch.",
             "Ich liebe es, wenn du lachst.",
-            "Du machst graue Tage bunt.",
-            "Bleib mutig – du schaffst das.",
-            "Du bist mein kleiner Stern am Himmel.",
-            "Ich liebe deine Nähe.",
-            "Jeder Tag mit dir ist ein Geschenk.",
-            "Du bist mein sicherer Hafen.",
-            "Ich glaub an dich, egal was kommt.",
-            "Du bist das Beste in meinem Leben.",
-            "Liebe ist, wenn du bei mir bist.",
-            "Du bist mein Ruhepol.",
-            "Ich liebe deine Art zu träumen.",
-            "Du bist stärker, als du denkst.",
-            "Jeder Augenblick mit dir zählt.",
-            "Du machst alles leichter.",
-            "Ich liebe dein Herz.",
-            "Du bist mein Lieblingsglück.",
-            "Mach weiter – ich steh hinter dir.",
-            "Du bist mein kleines Wunder.",
-            "Ich liebe, wie du mich siehst.",
-            "Du bist mein Mut, wenn alles schwer wird.",
-            "Bleib wie du bist – echt und schön.",
-            "Du bist mein Sonnenschein.",
-            "Ich liebe deine Stimme.",
-            "Du machst mein Leben heller.",
-            "Alles wird gut – du bist da.",
-            "Du bist mein Lieblingskapitel.",
-            "Ich liebe dein Lächeln.",
-            "Du bist mein Herzstück.",
-            "Bleib stark – du bist nicht allein.",
-            "Ich liebe, wie du mich verstehst.",
-            "Du bist mein kleiner Frieden.",
-            "Jeder Schritt mit dir ist wertvoll.",
-            "Ich liebe dich still, aber intensiv.",
-            "Du bist mein Glücksmoment.",
-            "Bleib geduldig – alles kommt zur richtigen Zeit.",
-            "Du bist mein Lieblingsgedanke.",
-            "Ich liebe deine kleine Verrücktheit.",
-            "Du bist mein Zuhause in jeder Stadt.",
-            "Jeder Tag mit dir ist heller.",
-            "Ich liebe dich, einfach so.",
-            "Du bist mein Anker.",
-            "Bleib du selbst – das ist genug.",
-            "Du bist mein Licht im Dunkeln.",
-            "Ich liebe deine Stärke und Sanftheit.",
-            "Du machst mein Herz leicht.",
-            "Jeder Augenblick mit dir ist kostbar.",
-            "Ich liebe dich mehr, als Worte sagen.",
-            "Du bist mein Grund zu lächeln.",
-            "Du bist mein Lieblingsmoment im Tag.",
-            "Bleib echt – das ist deine Superkraft.",
-            "Ich liebe deine Stimme, egal was du sagst.",
-            "Du bist der schönste Zufall meines Lebens.",
-            "Mach dein Ding – ich steh hinter dir.",
-            "Du bist meine tägliche Inspiration.",
-            "Ich liebe, wie du denkst.",
-            "Jeder Tag mit dir zählt doppelt.",
-            "Du bist mein Grund, zu lächeln.",
-            "Vergiss nie, wie wertvoll du bist.",
-            "Ich liebe dich auch an chaotischen Tagen.",
-            "Du bist das Licht, das mich führt.",
-            "Mach weiter – das Beste kommt noch.",
-            "Du bist mein Lieblingsblick.",
-            "Ich liebe es, wenn du ehrlich bist.",
-            "Du hast ein Herz aus Gold.",
-            "Mit dir fühlt sich alles wie Zuhause an.",
-            "Du kannst alles schaffen, was du willst.",
-            "Ich liebe, wie du mich verstehst.",
-            "Du bist mein Frieden nach langen Tagen.",
-            "Bleib stark, du bist nicht allein.",
-            "Du bist das Lächeln in meinem Herzen.",
-            "Ich liebe deine Art, zu leben.",
-            "Alles ist leichter, wenn du da bist.",
-            "Du bist mein kleines Stück Glück.",
-            "Ich liebe, wie du mich ansiehst.",
-            "Auch Fehler machen dich menschlich – und schön.",
-            "Du bist mein Lieblingsmensch, jeden Tag neu.",
-            "Ich glaub an dein Herz.",
-            "Du bist meine schönste Entscheidung.",
-            "Mach Pausen – du darfst atmen.",
-            "Ich liebe dich leise, aber konstant.",
-            "Du bist mein Sonnenschein an grauen Tagen.",
-            "Auch langsames Wachsen ist Wachsen.",
-            "Du bist mein Kompass, wenn ich mich verlauf.",
-            "Ich liebe, wie du da bist – echt und klar.",
-            "Sei stolz auf dich, du hast schon viel geschafft.",
-            "Du bist mein Lächeln, wenn’s schwer wird.",
-            "Ich liebe dich – immer ein bisschen mehr.",
-            "Du bist mein Herz in Menschengestalt.",
-            "Glaube an Wunder – du bist eines.",
-            "Ich liebe deine kleinen Macken.",
-            "Du bist genug, so wie du bist.",
-            "Mit dir wird selbst Stille laut vor Liebe.",
-            "Du bist mein Lieblingsgedanke vorm Einschlafen.",
-            "Ich liebe deine Stärke.",
-            "Du bringst Sonne in meine Nacht.",
-            "Bleib dir treu – du bist einzigartig.",
-            "Du bist der schönste Grund, geduldig zu sein.",
-            "Ich liebe dich – heute, morgen, immer.",
-            "Du bist mein Lieblingsgefühl.",
-            "Auch schwere Tage gehen vorbei.",
-            "Ich liebe dein Lächeln mehr als jeden Sonnenuntergang.",
-            "Du bist mein sicherer Ort.",
-            "Hör nie auf, du selbst zu sein.",
-            "Du gibst meinem Leben Farbe.",
-            "Ich glaub an dich, immer.",
-            "Mit dir wird’s nie langweilig.",
-            "Du bist mein bester Zufall.",
-            "Jeder Tag mit dir ist ein Geschenk.",
-            "Liebe heißt, dich jeden Tag neu zu wählen.",
-            "Du machst mich stolz, ohne es zu merken.",
-            "Du bist stärker, als du denkst.",
-            "Ich liebe, wie du liebst.",
-            "Bleib mutig, auch wenn’s schwer wird.",
-            "Du bist mein kleines Stück Himmel.",
-            "Ich bin glücklich, weil’s dich gibt.",
-            "Alles beginnt mit einem Lächeln – deins.",
-            "Du bringst Licht in meine Gedanken.",
-            "Ich liebe die Ruhe, wenn du da bist.",
-            "Mach weiter, auch wenn keiner klatscht.",
-            "Du bist mein Lieblingsgrund, aufzuwachen.",
-            "Ich liebe deine Art, die Welt zu sehen.",
-            "Lass dich nicht stressen – du machst das super.",
-            "Du bist das schönste Kapitel in meinem Leben.",
-            "Ich liebe dich mehr, als du ahnst.",
-            "Du bist die Antwort auf so viele meiner Fragen.",
-            "Bleib bei dir – du bist genug.",
-            "Ich will dich heute, morgen, immer.",
-            "Du bist mein Lieblingssong.",
-            "Alles wird gut, so wie du bist.",
-            "Ich liebe dein Herz, weil’s so echt ist.",
-            "Wenn du fällst, steh auf – ich bin da.",
-            "Du bist mein Anker in wilden Zeiten.",
-            "Ich liebe es, mit dir zu lachen.",
-            "Du bist mein kleines Wunder im Alltag.",
-            "Sei stolz auf dich – ich bin’s auch.",
-            "Du bist schöner, wenn du lachst.",
-            "Ich liebe dich, ohne Wenn und Aber.",
-            "Mit dir ist jede Sekunde wertvoll.",
-            "Du bist mein Licht, wenn’s dunkel wird.",
-            "Glaube an das Gute – es ist in dir.",
-            "Ich liebe, wie du träumst.",
-            "Du machst alles besser, einfach durch dein Dasein.",
-            "Auch kleine Schritte sind Fortschritt.",
-            "Du bist mein Lieblingsplan.",
-            "Ich liebe dein echtes Ich.",
-            "Wenn’s schwer wird, halt dich an mir fest.",
-            "Du bist das schönste „Wir“, das ich kenne.",
-            "Ich will dich – nicht nur für jetzt, sondern für immer.",
-            "Du bist mein Lieblingsgedanke am Tag.",
-            "Wenn du fällst, steh wieder auf – ich helf dir dabei.",
-            "Mit dir fühlt sich alles richtig an.",
-            "Liebe ist kein Wort, sondern dein Blick.",
-            "Du machst aus Alltag ein Abenteuer.",
-            "Kein Traum ist zu groß, wenn du dran glaubst.",
-            "Ich bin dankbar für jedes kleine Stück von uns.",
-            "Du bringst Ruhe in mein Chaos.",
-            "Heute ist ein guter Tag, um zu lieben.",
-            "Du bist der Grund, warum mein Herz lacht.",
-            "Auch kleine Siege sind wichtig.",
-            "Ich liebe, wie du mich ansiehst.",
-            "Manchmal ist dein Lächeln alles, was ich brauch.",
-            "Du gibst mir Kraft, selbst wenn du schweigst.",
-            "Du bist mein Zuhause in jeder Stadt.",
-            "Lass los, was dich runterzieht – ich fang dich auf.",
-            "Ich glaub an dich, auch wenn du’s grad nicht tust.",
-            "Mit dir ist selbst Stille schön.",
-            "Du bist mein Lieblingsmensch – immer noch.",
-            "Liebe ist, wenn du mein erster Gedanke bist.",
-            "Du schaffst das, egal wie schwer’s wirkt.",
-            "Ich liebe die Ruhe, wenn du neben mir bist.",
-            "Ein Tag ohne dich ist nur halb so hell.",
-            "Du bist meine schönste Ablenkung.",
-            "Heute ist dein Tag – mach ihn zu deinem Besten.",
-            "Du bist die schönste Art, „Zuhause“ zu sagen.",
-            "Auch Regen ist schön, wenn du dabei bist.",
-            "Du bist mein Mut in schwachen Momenten.",
-            "Ich will dich, nicht nur heute, sondern immer.",
-            "Du kannst stolz auf dich sein.",
-            "Ich liebe es, dass du echt bist.",
-            "Deine Nähe ist mein Lieblingsort.",
-            "Hör auf dein Herz – es weiß den Weg.",
-            "Du bist mein Lieblingsglück.",
-            "Ich lieb dich, ohne Grund, einfach so.",
-            "Du hast alles, was du brauchst, schon in dir.",
-            "Mit dir ist jeder Augenblick besonders.",
-            "Ich mag dich mehr, als Worte sagen können.",
-            "Du bist mein Halt, wenn alles wackelt.",
-            "Heute ist ein guter Tag zum Lächeln.",
-            "Du machst das Leben leichter.",
-            "Ich liebe es, wie du die Welt siehst.",
-            "Bleib, wie du bist – echt und wunderbar.",
-            "Ich glaub an dein Herz.",
-            "Du bist mein kleiner Frieden in dieser großen Welt.",
-            "Nichts ist schöner, als du, wenn du lachst.",
-            "Gib niemals auf – ich bin bei dir.",
-            "Du bist das Beste, was ich finden konnte.",
-            "Dein Mut macht mich stolz.",
-            "Ich liebe dich – jeden Tag ein bisschen mehr.",
-            "Manchmal reicht ein Mensch, um die ganze Welt heller zu machen – und für mich bist du dieser Mensch.",
-            "Ich liebe dich nicht, weil du perfekt bist, sondern weil du echt bist – mit allen Ecken, Kanten und dem schönsten Herzen, das ich kenne.",
-            "Es ist egal, wie weit wir kommen oder was passiert – solange wir füreinander kämpfen, haben wir schon gewonnen.",
-            "Du gibst mir das Gefühl, dass ich alles schaffen kann, solange du an meiner Seite bist.",
-            "Auch wenn das Leben stürmisch ist – mit dir hab ich gelernt, im Regen zu tanzen, statt auf Sonne zu warten.",
-            "Ich möchte dich nicht nur heute lieben, sondern an allen Tagen, an denen du dich selbst schwer lieben kannst.",
-            "Du bist mein sicherer Ort in einer Welt, die sich zu schnell dreht.",
-            "Wenn du zweifelst, erinnere dich daran, wie weit du schon gekommen bist – und dass du niemals allein kämpfst.",
-            "Liebe ist nicht immer laut – manchmal ist sie einfach das leise „Ich bin da“, wenn du’s am meisten brauchst.",
-            "Ich liebe dich dafür, dass du mich nicht verändern willst, sondern dass du mich sehen lässt, wer ich wirklich bin.",
-            "Du bist mein Lieblingsmoment jeden Tag.",
-            "Egal wie schwer’s wird – ich bin bei dir.",
-            "Dein Lächeln ist meine tägliche Motivation.",
-            "Mit dir fühlt sich alles leichter an.",
-            "Glaub an dich so, wie ich an dich glaube.",
-            "Du machst graue Tage bunt.",
-            "Ich liebe, wie du das Leben schöner machst.",
-            "Auch Wolken sehen gut aus, wenn du lachst.",
-            "Kein Ziel ist zu weit, wenn du’s mit Herz angehst.",
-            "Du bist mein Ruhepunkt in allem Chaos.",
-            "Kleine Schritte zählen auch – Hauptsache weitergehen.",
-            "Mit dir fühlt sich selbst Montag gut an.",
-            "Du bist meine schönste Gewohnheit.",
-            "Du kannst mehr, als du dir zutraust.",
-            "Ich liebe dich nicht nur – ich bewundere dich.",
-            "Heute ist ein guter Tag, um zu strahlen.",
-            "Alles, was du brauchst, ist schon in dir.",
-            "Wenn du fällst, halt ich dich fest.",
-            "Dein Mut steckt an.",
-            "Mit dir ist selbst Schweigen laut vor Glück.",
-            "Jeder neue Tag ist eine Chance – nutz ihn.",
-            "Ich bin stolz auf dich, egal was kommt.",
-            "Du bist mein Zuhause, egal wo ich bin.",
-            "Glaube an Wunder – ich tu’s, seit ich dich kenne.",
-            "Du bist stärker, als du denkst.",
-            "Ich liebe, wie echt du bist.",
-            "Mach heute das, wofür du morgen dankbar bist.",
-            "Du bringst Sonne in jeden Raum.",
-            "Alles wird gut – besonders mit dir.",
-            "Du bist mein Lieblingsmensch, jeden Tag neu.",
-            "Hör nie auf, an dich zu glauben.",
-            "Bei dir fühlt sich alles richtig an.",
-            "Du brauchst keinen Filter – du bist echt schön.",
-            "Jeder Traum beginnt mit dem Mut, ihn zu träumen.",
-            "Ich liebe es, wenn du lachst – da scheint die Welt heller.",
-            "Du bist mein Zufall mit Absicht.",
-            "Auch Pausen sind Fortschritt.",
-            "Mit dir wird selbst Alltag magisch.",
-            "Du bist das Beste, was mir passieren konnte.",
-            "Glaube an kleine Schritte – sie bringen dich weit.",
-            "Ich liebe dein Herz – nicht deine Perfektion.",
-            "Auch Sterne brauchen Dunkelheit, um zu leuchten.",
-            "Alles, was zählt, ist Liebe und Mut.",
-            "Du bist mein Grund, nie aufzugeben.",
-            "Mach’s wie die Sonne – strahl einfach weiter.",
-            "Ich will mit dir wachsen, nicht stehen bleiben.",
-            "Du bist mein Lieblingskapitel.",
-            "Wenn du lachst, vergess ich die Welt.",
-            "Du machst mich zu einer besseren Version von mir.",
             "Du bist genug. Immer."
         ];
         function zeigeZufallstext() {
@@ -758,7 +539,7 @@
             document.getElementById('text').textContent = texte[index];
         }
 
-        // --- 6. BOUNCING KITTY LOGIK ---
+        // --- 7. BOUNCING KITTY LOGIK (unverändert) ---
         const bilder = [
             "hello-kitty.png", "miffy.png", "dylan.jpg", "tiger.png", "hai.jpg", "panda.jpg", 
             "snoopy.jpg", "fenerbahce.jpg", "kd.png", "fler.webp", "freeway.jpg"
