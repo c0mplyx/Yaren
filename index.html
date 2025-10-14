@@ -29,7 +29,7 @@
             color: #e55381; /* Knalliges Pink */
             display: block; 
             font-size: 1.1em;
-            margin-top: 0; /* Kein zusätzlicher Abstand nötig */
+            margin-top: 0; 
         }
         
         .content-container {
@@ -265,6 +265,7 @@
         <button class="menupunkt" id="datenTab" onclick="zeigeTab('daten')">Daten</button>
         <button class="menupunkt" id="bilderTab" onclick="zeigeTab('bilder')">Bilder</button>
         <button class="menupunkt" id="faktenTab" onclick="zeigeTab('fakten')">Fakten</button>
+        <button class="menupunkt" id="sudokuTab" onclick="zeigeTab('sudoku')">Sudoku</button>
         <button class="menupunkt" id="plaeneTab" onclick="zeigeTab('plaene')">Pläne</button>
     </nav>
     
@@ -312,6 +313,18 @@
             
             <p style="margin-top: 20px; color: #7a5580;">
                 Komm morgen wieder für den nächsten Fakt!
+            </p>
+        </div>
+        <div id="sudokuContent" class="tab-content">
+            <h1>Sudoku-Zeit! Viel Spaß!🥰</h1>
+            
+            <iframe id="sudokuIframe" 
+                    src="https://sudoku.com/de" 
+                    style="width: 95%; max-width: 1000px; height: 750px; border: 2px solid #e55381; border-radius: 16px; margin-top: 15px;">
+            </iframe>
+            
+            <p style="margin-top: 20px; color: #7a5580;">
+                Wähle einfach deine Schwierigkeit im Fenster und starte! Um das Spiel zu starken klicke erst auf "Cookie Preferences" und dann auf "Accept only necessary" Danach kannst du loslegen mein Herz. Viel spaß! Ich Liebe Dich!
             </p>
         </div>
         <div id="plaeneContent" class="tab-content">
@@ -388,7 +401,7 @@
         
         setInterval(updateLoveCounter, 1000); 
 
-        // --- 2. FAKTEN LOGIK (NEU MIT IFRAME UND NEUER LISTE) ---
+        // --- 2. FAKTEN LOGIK (MIT IFRAME UND NEUER LISTE) ---
         // Die Liste ist so sortiert, dass heute (14.10.2025) Hello Kitty angezeigt wird.
         const faktenTexte = [
             // Index 0 (Heute + 5 Tage, da Start 22.08.)
@@ -430,7 +443,7 @@
             document.getElementById('faktenIframe').src = heutigerFakt.link;
         }
 
-        // --- 3. TAB-LOGIK (unverändert) ---
+        // --- 3. TAB-LOGIK ---
         let aktuellerTab = 'sprueche';
 
         function zeigeTab(neuerTabName) {
@@ -452,7 +465,8 @@
             tabs.forEach(tab => tab.classList.remove('active'));
             document.getElementById(neuerTabName + 'Tab').classList.add('active');
 
-            if (neuerTabName === 'daten') {
+            // Spezielle Fußzeilen-Anpassung
+            if (neuerTabName === 'daten' || neuerTabName === 'sudoku' || neuerTabName === 'fakten') {
                 footer.classList.add('footer-daten-active');
             } else {
                 footer.classList.remove('footer-daten-active');
