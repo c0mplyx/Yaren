@@ -151,6 +151,7 @@
             transition: none;
             user-select: none;
         }	
+        /* BILDER-TAB STYLES */
         #bilderContent {
             width: 100%;
             display: flex;
@@ -266,6 +267,7 @@
         <button class="menupunkt" id="bilderTab" onclick="zeigeTab('bilder')">Bilder</button>
         <button class="menupunkt" id="faktenTab" onclick="zeigeTab('fakten')">Fakten</button>
         <button class="menupunkt" id="sudokuTab" onclick="zeigeTab('sudoku')">Sudoku</button>
+        <button class="menupunkt" id="musikTab" onclick="zeigeTab('musik')">Musik</button> 
         <button class="menupunkt" id="plaeneTab" onclick="zeigeTab('plaene')">Pläne</button>
     </nav>
     
@@ -316,7 +318,7 @@
             </p>
         </div>
         <div id="sudokuContent" class="tab-content">
-            <h1>Sudoku-Zeit! Viel Spaß!🥰</h1>
+            <h1>Sudoku-Zeit! Viel Spaß, meine Liebe 🥰</h1>
             
             <iframe id="sudokuIframe" 
                     src="https://sudoku.com/de" 
@@ -324,8 +326,31 @@
             </iframe>
             
             <p style="margin-top: 20px; color: #7a5580;">
-                Wähle einfach deine Schwierigkeit im Fenster und starte! Um das Spiel zu starken klicke erst auf "Cookie Preferences" und dann auf "Accept only necessary" Danach kannst du loslegen mein Herz. Viel spaß! Ich Liebe Dich!
+                Wähle einfach deine Schwierigkeit im Fenster und starte!
             </p>
+        </div>
+        <div id="musikContent" class="tab-content">
+            <h1>Hör rein!🎶</h1>
+            
+            <div style="width: 95%; max-width: 700px; margin-top: 15px;">
+                <iframe data-testid="embed-iframe" style="border-radius:12px" 
+                        src="https://open.spotify.com/embed/playlist/724T6ZzfJsRNOaMt4LJUD5?utm_source=generator" 
+                        width="100%" height="352" frameBorder="0" allowfullscreen="" 
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                        loading="lazy">
+                </iframe>
+            </div>
+
+            <p style="margin-top: 25px; color: #7a5580; font-size: 1.1em;">
+                Drücke auf Play und genieße die Musik!
+            </p>
+            
+            <a href="https://open.spotify.com/embed/track/$4" target="_blank" 
+               style="text-decoration: none; margin-top: 10px;">
+                <button class="spruch-btn" style="background: #7a5580;">
+                    In neuem Fenster suchen 🔎
+                </button>
+            </a>
         </div>
         <div id="plaeneContent" class="tab-content">
             <h1>Pläne</h1>
@@ -402,22 +427,15 @@
         setInterval(updateLoveCounter, 1000); 
 
         // --- 2. FAKTEN LOGIK (MIT IFRAME UND NEUER LISTE) ---
-        // Die Liste ist so sortiert, dass heute (14.10.2025) Hello Kitty angezeigt wird.
         const faktenTexte = [
-            // Index 0 (Heute + 5 Tage, da Start 22.08.)
+            // Index 0 (Heute: 14.10.2025, ist der 53. Tag seit 22.08.2025, also Index 53 % 12 = Index 5)
             { titel: "Der gemütliche Panda 🐼", link: "https://de.wikipedia.org/wiki/Großer_Panda" }, 
             { titel: "Kuschelige Hasen 🐇", link: "https://de.wikipedia.org/wiki/Echte_Hasen" }, 
             { titel: "Call of Duty: Black Ops 2 💣", link: "https://de.wikipedia.org/wiki/Call_of_Duty:_Black_Ops_II" }, 
             { titel: "Der süße Pokémon Fakt ⚡", link: "https://de.wikipedia.org/wiki/Pokémon" }, 
             { titel: "Vampire Diaries (Damon! 😉)", link: "https://de.wikipedia.org/wiki/Vampire_Diaries" },
-            
-            // Index 5 -> Hello Kitty (IST HEUTE, da 53 % 12 = 5)
             { titel: "Dein Liebling: Hello Kitty 🎀", link: "https://de.wikipedia.org/wiki/Hello_Kitty" }, 
-            
-            // Index 6 -> Morgen
             { titel: "Der leuchtende Mond 🌕", link: "https://de.wikipedia.org/wiki/Mond" },
-            
-            // Index 7 -> Übermorgen
             { titel: "Der coole Hai 🦈", link: "https://de.wikipedia.org/wiki/Haie" },
             { titel: "Der mächtige Tiger 🐅", link: "https://de.wikipedia.org/wiki/Tiger" },
             { titel: "Das beste Häschen: Miffy 🐰", link: "https://de.wikipedia.org/wiki/Miffy" }, 
@@ -432,14 +450,12 @@
             
             const diffDays = Math.floor(diffTime / ONE_DAY);
             
-            // Modulo, damit die Liste nach 12 Tagen wieder von vorne beginnt
             const index = diffDays % faktenTexte.length; 
             
             const heutigerFakt = faktenTexte[index];
             
             document.getElementById('faktenTitel').textContent = `Dein täglicher Fakt: ${heutigerFakt.titel}`;
             
-            // Setze die URL des iFrames
             document.getElementById('faktenIframe').src = heutigerFakt.link;
         }
 
@@ -466,7 +482,7 @@
             document.getElementById(neuerTabName + 'Tab').classList.add('active');
 
             // Spezielle Fußzeilen-Anpassung
-            if (neuerTabName === 'daten' || neuerTabName === 'sudoku' || neuerTabName === 'fakten') {
+            if (neuerTabName === 'daten' || neuerTabName === 'sudoku' || neuerTabName === 'fakten' || neuerTabName === 'musik') {
                 footer.classList.add('footer-daten-active');
             } else {
                 footer.classList.remove('footer-daten-active');
