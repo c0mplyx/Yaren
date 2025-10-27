@@ -371,13 +371,13 @@
         // JAVASCRIPT LOGIK
         // =========================================================================
 
-        // --- 1. ECHTZEIT-COUNTER LOGIK ---
-        // DAS STARTDATUM WURDE AUF HEUTE GEÄNDERT: 27. OKTOBER 2025
-        const START_DATE = new Date('2025-10-27T00:00:00'); 
+        // --- 1. ECHTZEIT-COUNTER LOGIK (STARTDATUM WIE URSPRÜNGLICH GEWÜNSCHT) ---
+        // Dies ist das Datum für den "Wie lange sind wir zusammen" Zähler!
+        const COUNTER_START_DATE = new Date('2025-08-22T00:00:00'); 
 
         function updateLoveCounter() {
             const now = new Date();
-            const diff = now.getTime() - START_DATE.getTime(); 
+            const diff = now.getTime() - COUNTER_START_DATE.getTime(); // NUTZT DAS TIMER-DATUM
 
             if (diff < 0) {
                  document.getElementById('lovecounter').textContent = "Bald ist es soweit!";
@@ -396,9 +396,9 @@
             let hours = totalHours % 24;
 
             // --- Monats- und Tagesberechnung für saubere Anzeige ---
-            let years = now.getFullYear() - START_DATE.getFullYear();
-            let months = now.getMonth() - START_DATE.getMonth();
-            let days = now.getDate() - START_DATE.getDate();
+            let years = now.getFullYear() - COUNTER_START_DATE.getFullYear();
+            let months = now.getMonth() - COUNTER_START_DATE.getMonth();
+            let days = now.getDate() - COUNTER_START_DATE.getDate();
 
             if (days < 0) {
                 months--;
@@ -423,7 +423,9 @@
         
         setInterval(updateLoveCounter, 1000); 
 
-        // --- 2. FAKTEN LOGIK (16 NEUE FAKTEN - Fortlaufend) ---
+        // --- 2. FAKTEN LOGIK (STARTDATUM IST HEUTE, 27. OKTOBER 2025) ---
+        // Dies ist das Datum, ab dem die Fakten chronologisch gezählt werden!
+        const FAKTEN_START_DATE = new Date('2025-10-27T00:00:00'); 
         
         const faktenTexte = [
             // Tag 1 (Index 0)
@@ -433,9 +435,9 @@
             // Tag 3 (Index 2)
             { titel: "Istanbul", link: "https://de.wikipedia.org/wiki/Istanbul" },
             // Tag 4 (Index 3)
-            { titel: "Deine große Liebe", link: "https://de.wikipedia.org/wiki/Geld" },
+            { titel: "Deine große Liebe ", link: "https://de.wikipedia.org/wiki/Geld" },
             // Tag 5 (Index 4)
-            { titel: "Türkei 🇹🇷", link: "https://de.wikipedia.org/wiki/Türkei" },
+            { titel: "Türkiye 🇹🇷", link: "https://de.wikipedia.org/wiki/Türkei" },
             // Tag 6 (Index 5)
             { titel: "Rosenwasser", link: "https://de.wikipedia.org/wiki/Rosenwasser" },
             // Tag 7 (Index 6)
@@ -447,9 +449,9 @@
             // Tag 10 (Index 9)
             { titel: "Balıkesir", link: "https://de.wikipedia.org/wiki/Balıkesir" },
             // Tag 11 (Index 10)
-            { titel: "Sudoku-Fakt für die beste Sudoku Spielerin", link: "https://de.wikipedia.org/wiki/Sudoku" },
+            { titel: "Sudoku-Fakt für die beste Sudoku Spielerin der Welt", link: "https://de.wikipedia.org/wiki/Sudoku" },
             // Tag 12 (Index 11)
-            { titel: "Rummikub-Fakt", link: "https://de.wikipedia.org/wiki/Rummikub" },
+            { titel: "Rummikub", link: "https://de.wikipedia.org/wiki/Rummikub" },
             // Tag 13 (Index 12)
             { titel: "Kinder Schoko-Bons", link: "https://de.wikipedia.org/wiki/Kinder_Schoko-Bons" },
             // Tag 14 (Index 13)
@@ -463,7 +465,7 @@
 
         function zeigeTagesfakt() {
             const ONE_DAY = 1000 * 60 * 60 * 24;
-            const diffTime = new Date().getTime() - START_DATE.getTime();
+            const diffTime = new Date().getTime() - FAKTEN_START_DATE.getTime(); // NUTZT DAS FAKTEN-DATUM
             
             // Wenn der Zähler noch nicht gestartet ist (Startdatum liegt in der Zukunft)
             if (diffTime < 0) {
@@ -473,7 +475,7 @@
                  return;
             } 
             
-            // Berechnet die Anzahl der vollen Tage seit dem Startdatum (Index 0 = Tag 1)
+            // Berechnet die Anzahl der vollen Tage seit dem Fakten-Start (Index 0 = Tag 1)
             const diffDays = Math.floor(diffTime / ONE_DAY); 
             
             const anzahlFakten = faktenTexte.length;
