@@ -64,12 +64,13 @@
         /* Basis-Styles für Menü */
         .menuleiste {
             display: flex;
-            gap: 40px;
+            gap: 20px; 
             justify-content: center;
             align-items: center;
             padding: 24px 0 10px 0;
             background: #fbe5fa;
             border-bottom: 2px solid #e55381;
+            flex-wrap: wrap; 
         }
         .menupunkt {
             font-size: 1.2em;
@@ -78,9 +79,10 @@
             border: none;
             cursor: pointer;
             font-weight: bold;
-            padding: 8px 20px;
+            padding: 8px 15px; 
             border-radius: 10px;
             transition: background 0.2s, color 0.2s;
+            white-space: nowrap; 
         }
         .menupunkt.active, .menupunkt:hover {
             background: #e55381;
@@ -232,8 +234,8 @@
         @media (max-width: 600px) {
             #kitty { width: 80px; height: 80px; }
             #datenbox { font-size: 1em; padding: 1em; }
-            .menuleiste { gap: 15px; padding: 15px 0; }
-            .menupunkt { padding: 6px 12px; font-size: 1em; }
+            .menuleiste { gap: 10px; padding: 15px 0; }
+            .menupunkt { padding: 6px 10px; font-size: 0.9em; }
         }
         footer {
             margin-top: 20px;
@@ -330,11 +332,11 @@
             </p>
         </div>
         <div id="musikContent" class="tab-content">
-            <h1>Hör rein!🎶</h1>
+            <h1>Hör rein! Deine Lieblingsmusik 🎶</h1>
             
             <div style="width: 95%; max-width: 700px; margin-top: 15px;">
                 <iframe data-testid="embed-iframe" style="border-radius:12px" 
-                        src="https://open.spotify.com/embed/playlist/724T6ZzfJsRNOaMt4LJUD5?utm_source=generator" 
+                        src="https://open.spotify.com/embed/playlist/5vNo2iqXaHOV4aFu3DRrdr?utm_source=generator" 
                         width="100%" height="352" frameBorder="0" allowfullscreen="" 
                         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
                         loading="lazy">
@@ -356,7 +358,7 @@
             <h1>Pläne</h1>
             <p style="text-align:center; color:#7a5580; font-size:1.2em; margin-top:20px;">Hier kommt bald unsere Bucket List hin!</p>
         </div>
-    </div>
+        </div>
     
     <div id="cat-container">
         <img id="kitty" src="hello-kitty.png" alt="Hello Kitty">
@@ -370,7 +372,8 @@
         // =========================================================================
 
         // --- 1. ECHTZEIT-COUNTER LOGIK ---
-        const START_DATE = new Date('2025-08-22T00:00:00'); 
+        // DAS STARTDATUM WURDE AUF HEUTE GEÄNDERT: 27. OKTOBER 2025
+        const START_DATE = new Date('2025-10-27T00:00:00'); 
 
         function updateLoveCounter() {
             const now = new Date();
@@ -382,9 +385,7 @@
             }
 
             const msPerSecond = 1000;
-            const msPerMinute = msPerSecond * 60;
-            const msPerHour = msPerMinute * 60;
-
+            
             let totalSeconds = Math.floor(diff / msPerSecond);
             let seconds = totalSeconds % 60;
 
@@ -394,31 +395,27 @@
             let totalHours = Math.floor(totalMinutes / 60);
             let hours = totalHours % 24;
 
+            // --- Monats- und Tagesberechnung für saubere Anzeige ---
             let years = now.getFullYear() - START_DATE.getFullYear();
             let months = now.getMonth() - START_DATE.getMonth();
-            let remainingDays;
-            
-            if (months < 0 || (months === 0 && now.getDate() < START_DATE.getDate())) {
+            let days = now.getDate() - START_DATE.getDate();
+
+            if (days < 0) {
+                months--;
+                const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                days += lastMonth;
+            }
+
+            if (months < 0) {
                 years--;
                 months += 12;
             }
+            // --- Ende Monats- und Tagesberechnung ---
             
-            if (now.getDate() < START_DATE.getDate()) {
-                months--;
-                const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-                remainingDays = (lastMonth - START_DATE.getDate()) + now.getDate();
-            } else {
-                remainingDays = now.getDate() - START_DATE.getDate();
-            }
-            
-            let weeks = Math.floor(remainingDays / 7);
-            remainingDays = remainingDays % 7;
-
             const counterText = 
                   `${years} Jahr${years !== 1 ? 'e' : ''}, ` +
                   `${months} Monat${months !== 1 ? 'e' : ''}, ` +
-                  `${weeks} Woche${weeks !== 1 ? 'n' : ''}, ` +
-                  `${remainingDays} Tag${remainingDays !== 1 ? 'e' : ''}, ` +
+                  `${days} Tag${days !== 1 ? 'e' : ''}, ` + 
                   `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
             document.getElementById('lovecounter').textContent = counterText;
@@ -426,40 +423,77 @@
         
         setInterval(updateLoveCounter, 1000); 
 
-        // --- 2. FAKTEN LOGIK (MIT IFRAME UND NEUER LISTE) ---
+        // --- 2. FAKTEN LOGIK (16 NEUE FAKTEN - Fortlaufend) ---
+        
         const faktenTexte = [
-            // Index 0 (Heute: 14.10.2025, ist der 53. Tag seit 22.08.2025, also Index 53 % 12 = Index 5)
-            { titel: "Der gemütliche Panda 🐼", link: "https://de.wikipedia.org/wiki/Großer_Panda" }, 
-            { titel: "Kuschelige Hasen 🐇", link: "https://de.wikipedia.org/wiki/Echte_Hasen" }, 
-            { titel: "Call of Duty: Black Ops 2 💣", link: "https://de.wikipedia.org/wiki/Call_of_Duty:_Black_Ops_II" }, 
-            { titel: "Der süße Pokémon Fakt ⚡", link: "https://de.wikipedia.org/wiki/Pokémon" }, 
-            { titel: "Vampire Diaries (Damon! 😉)", link: "https://de.wikipedia.org/wiki/Vampire_Diaries" },
-            { titel: "Dein Liebling: Hello Kitty 🎀", link: "https://de.wikipedia.org/wiki/Hello_Kitty" }, 
-            { titel: "Der leuchtende Mond 🌕", link: "https://de.wikipedia.org/wiki/Mond" },
-            { titel: "Der coole Hai 🦈", link: "https://de.wikipedia.org/wiki/Haie" },
-            { titel: "Der mächtige Tiger 🐅", link: "https://de.wikipedia.org/wiki/Tiger" },
-            { titel: "Das beste Häschen: Miffy 🐰", link: "https://de.wikipedia.org/wiki/Miffy" }, 
-            { titel: "Der beste Hund: Snoopy 🐶", link: "https://de.wikipedia.org/wiki/Snoopy" }, 
-            { titel: "Der Nutella Fakt 🌰", link: "https://de.wikipedia.org/wiki/Nutella" }
+            // Tag 1 (Index 0)
+            { titel: "Fener💛💙", link: "https://de.wikipedia.org/wiki/Fenerbahçe_SK" },
+            // Tag 2 (Index 1)
+            { titel: "Pädagogik", link: "https://de.wikipedia.org/wiki/Pädagogik" },
+            // Tag 3 (Index 2)
+            { titel: "Istanbul", link: "https://de.wikipedia.org/wiki/Istanbul" },
+            // Tag 4 (Index 3)
+            { titel: "Deine große Liebe", link: "https://de.wikipedia.org/wiki/Geld" },
+            // Tag 5 (Index 4)
+            { titel: "Türkei 🇹🇷", link: "https://de.wikipedia.org/wiki/Türkei" },
+            // Tag 6 (Index 5)
+            { titel: "Rosenwasser", link: "https://de.wikipedia.org/wiki/Rosenwasser" },
+            // Tag 7 (Index 6)
+            { titel: "Kurdistan", link: "https://de.wikipedia.org/wiki/Kurdistan" },
+            // Tag 8 (Index 7)
+            { titel: "Das unendliche Meer", link: "https://de.wikipedia.org/wiki/Meer" },
+            // Tag 9 (Index 8)
+            { titel: "Samsun", link: "https://de.wikipedia.org/wiki/Samsun" },
+            // Tag 10 (Index 9)
+            { titel: "Balıkesir", link: "https://de.wikipedia.org/wiki/Balıkesir" },
+            // Tag 11 (Index 10)
+            { titel: "Sudoku-Fakt für die beste Sudoku Spielerin", link: "https://de.wikipedia.org/wiki/Sudoku" },
+            // Tag 12 (Index 11)
+            { titel: "Rummikub-Fakt", link: "https://de.wikipedia.org/wiki/Rummikub" },
+            // Tag 13 (Index 12)
+            { titel: "Kinder Schoko-Bons", link: "https://de.wikipedia.org/wiki/Kinder_Schoko-Bons" },
+            // Tag 14 (Index 13)
+            { titel: "Rosa", link: "https://de.wikipedia.org/wiki/Rosa_(Farbe)" },
+            // Tag 15 (Index 14)
+            { titel: "Lilien", link: "https://de.wikipedia.org/wiki/Lilien" },
+            // Tag 16 (Index 15) - Dein neuer End-Fakt
+            { titel: "Du", link: "https://de.wikipedia.org/wiki/Gl%C3%BCck" }
+            // ➡️ HIER FÜGST DU IMMER NEUE FAKTEN HINZU
         ];
 
         function zeigeTagesfakt() {
             const ONE_DAY = 1000 * 60 * 60 * 24;
             const diffTime = new Date().getTime() - START_DATE.getTime();
-            if (diffTime < 0) return; 
             
-            const diffDays = Math.floor(diffTime / ONE_DAY);
+            // Wenn der Zähler noch nicht gestartet ist (Startdatum liegt in der Zukunft)
+            if (diffTime < 0) {
+                 document.getElementById('faktenTitel').textContent = "Der Fakten-Start steht bevor! 🎉";
+                 document.getElementById('faktenIframe').src = "https://de.wikipedia.org/wiki/Neugierde";
+                 document.querySelector('#faktenContent p').textContent = "Komm am Startdatum wieder!";
+                 return;
+            } 
             
-            const index = diffDays % faktenTexte.length; 
+            // Berechnet die Anzahl der vollen Tage seit dem Startdatum (Index 0 = Tag 1)
+            const diffDays = Math.floor(diffTime / ONE_DAY); 
             
-            const heutigerFakt = faktenTexte[index];
-            
-            document.getElementById('faktenTitel').textContent = `Dein täglicher Fakt: ${heutigerFakt.titel}`;
-            
-            document.getElementById('faktenIframe').src = heutigerFakt.link;
+            const anzahlFakten = faktenTexte.length;
+
+            if (diffDays >= anzahlFakten) {
+                // Wenn der Tag-Index die Anzahl der Fakten überschreitet (Liste aufgebraucht)
+                document.getElementById('faktenTitel').textContent = "Alle aktuellen Fakten gesehen! 🎉";
+                document.getElementById('faktenIframe').src = "https://de.wikipedia.org/wiki/Liebe"; // Standard-End-Fakt
+                document.querySelector('#faktenContent p').textContent = "Kein Problem! Mervan wird bald neue Überraschungen hinzufügen! 😉";
+            } else {
+                // Zeigt den Fakt an, der dem Tag exakt entspricht
+                const heutigerFakt = faktenTexte[diffDays]; 
+                
+                document.getElementById('faktenTitel').textContent = `Dein täglicher Fakt: ${heutigerFakt.titel}`;
+                document.getElementById('faktenIframe').src = heutigerFakt.link;
+                document.querySelector('#faktenContent p').textContent = "Komm morgen wieder für den nächsten Fakt!";
+            }
         }
 
-        // --- 3. TAB-LOGIK ---
+        // --- 3. TAB-LOGIK (UNVERÄNDERT) ---
         let aktuellerTab = 'sprueche';
 
         function zeigeTab(neuerTabName) {
@@ -481,7 +515,6 @@
             tabs.forEach(tab => tab.classList.remove('active'));
             document.getElementById(neuerTabName + 'Tab').classList.add('active');
 
-            // Spezielle Fußzeilen-Anpassung
             if (neuerTabName === 'daten' || neuerTabName === 'sudoku' || neuerTabName === 'fakten' || neuerTabName === 'musik') {
                 footer.classList.add('footer-daten-active');
             } else {
@@ -559,7 +592,7 @@
 
         // --- 6. SPRÜCHE LOGIK (HIER MUSST DU DEINE 157 SPRÜCHE EINFÜGEN!) ---
         const texte = [
-            // ❗❗ BITTE HIER ALLE DEINE SPRÜCHE WIEDER EINFÜGEN (in Anführungszeichen, mit Komma) ❗❗
+            // ❗❗ BITTE HIER ALLE DEINE SPRÜCHE WIEDER EINFÜGEN ❗❗
             "Du bist mein Lieblingsmensch.",
             "Ich liebe es, wenn du lachst.",
             "Du bist genug. Immer."
