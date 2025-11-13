@@ -2,53 +2,680 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meine Botschaft</title>
+    <title>Für meine Yaren ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        /*
-         * STYLESHEET
-         * Für die Zentrierung und die große Schriftgröße
-         */
-
-        body, html {
-            height: 100%; /* Wichtig, damit das Body-Element den gesamten Viewport ausfüllt */
+        /* ========================================================================= */
+        /* BASIS & FARBEN */
+        /* ========================================================================= */
+        body {
+            font-family: Arial, sans-serif;
+            background: #fceaff; 
             margin: 0;
-            font-family: Arial, sans-serif; /* Eine klare, gut lesbare Schriftart */
-            display: flex; /* Flexbox für die Zentrierung des Inhalts */
-            justify-content: center; /* Horizontale Zentrierung */
-            align-items: center; /* Vertikale Zentrierung */
-            background-color: #f0f0f0; /* Heller Hintergrund */
-            color: #333; /* Dunkler Text */
+            min-height: 100vh;
+        }
+        
+        /* ZÄHLER-STYLING (OHNE TEXT) */
+        #counter-area {
             text-align: center;
-        }
-
-        .headline-container {
-            max-width: 90%; /* Stellt sicher, dass der Text nicht zu weit an den Rand geht */
-            padding: 20px;
-        }
-
-        .headline {
-            /* Hier wird die Schriftgröße festgelegt: */
-            font-size: 8vw; /* 'vw' = viewport width. Die Größe skaliert mit der Bildschirmbreite */
+            font-size: 1.2em;
+            color: #7a5580; /* Dunkelviolett */
             font-weight: bold;
-            line-height: 1.1; /* Etwas engerer Zeilenabstand */
+            padding: 10px 0;
+            background: #fbe5fa; /* Leichter Hintergrund */
+            border-bottom: 2px solid #e5538150;
         }
-
-        /* Anpassungen für kleinere Bildschirme, falls 8vw zu groß ist */
+        #lovecounter {
+            color: #e55381; /* Knalliges Pink */
+            display: block; 
+            font-size: 1.1em;
+            margin-top: 0; 
+        }
+        
+        .content-container {
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 60vh;
+        }
+        
+        /* KORREKTUR FÜR SMOOTHEN TAB-WECHSEL (CSS-Basis) */
+        .tab-content {
+            opacity: 0;
+            max-height: 0; 
+            overflow: hidden; 
+            transition: opacity 0.4s ease-in-out, max-height 0.4s ease-in-out; 
+            
+            width: 100%;             
+            text-align: center;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;  
+        }
+        
+        /* Zustand für den AKTIVEN TAB */
+        .tab-content.active {
+            opacity: 1;
+            max-height: 5000px; /* Muss immer höher sein als der Inhalt */
+        }
+        
+        /* Basis-Styles für Menü */
+        .menuleiste {
+            display: flex;
+            gap: 20px; 
+            justify-content: center;
+            align-items: center;
+            padding: 24px 0 10px 0;
+            background: #fbe5fa;
+            border-bottom: 2px solid #e55381;
+            flex-wrap: wrap; 
+        }
+        .menupunkt {
+            font-size: 1.2em;
+            color: #e55381;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            padding: 8px 15px; 
+            border-radius: 10px;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap; 
+        }
+        .menupunkt.active, .menupunkt:hover {
+            background: #e55381;
+            color: #fff;
+        }
+        
+        #text {
+            font-size: 1.5em;
+            margin: 30px 0;
+            color: #e55381;
+            text-align: center;
+            min-height: 3em;
+            width: 90%; 
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center; 
+            color: #e55381;
+            margin-bottom: 5px;
+        }
+        button.spruch-btn {
+            font-size: 1.2em;
+            padding: 12px 24px;
+            background: #e55381;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 24px;
+        }
+        button.spruch-btn:hover {
+            background: #c13c63;
+        }
+        
+        /* DATENBOX ZENTRIERUNG */
+        #datenbox {
+            max-width: 600px;
+            width: 90%; 
+            margin: 36px auto 0 auto; 
+            background: #fff0f7;
+            border: 2px solid #e55381;
+            border-radius: 16px;
+            box-shadow: 0 0 12px #e5538150;
+            padding: 2em;
+            color: #7a5580;
+            font-size: 1.15em;
+            text-align: left; 
+        }
+        
+        /* BOUNCING KITTY & EFFEKTE (Styles unverändert) */
+        #cat-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+        }
+        #kitty {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            will-change: transform;
+            transition: none;
+            user-select: none;
+        }	
+        /* BILDER-TAB STYLES */
+        #bilderContent {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .galerie-bild {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto 24px auto;
+            border-radius: 20px;
+            box-shadow: 0 2px 16px #e5538150;
+            background: #fff;
+            transition: transform 0.3s ease-out; 
+        }
+        .galerie-bild:hover {
+            transform: scale(1.05); 
+        }
+        
+        /* ... (Weitere Effekt-Styles wie Overlay, Herzen bleiben unverändert) ... */
+        #welcomeOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            color: #e55381;
+            font-weight: bold;
+            opacity: 1;
+            transition: opacity 1.5s ease-out;
+        }
+        .background-heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; 
+            z-index: -1; 
+        }
+        .dynamic-heart {
+            position: absolute;
+            font-size: 40px; 
+            color: rgba(229, 83, 129, 0.3); 
+            text-shadow: 0 0 5px rgba(229, 83, 129, 0.5); 
+            opacity: 0; 
+            animation: heart-fade-pulse 4s forwards; 
+        }
+        @keyframes heart-fade-pulse {
+            0%  { transform: scale(0.5); opacity: 0; }
+            20% { transform: scale(1.0); opacity: 0.6; } 
+            80% { transform: scale(1.1); opacity: 0.6; } 
+            100% { transform: scale(1.5); opacity: 0; } 
+        }
+        .click-heart {
+            position: absolute;
+            pointer-events: none;
+            font-size: 2em;
+            color: #e55381;
+            user-select: none;
+            transform: translate(-50%, -50%) scale(0);
+            animation: click-heart-anim 1s forwards;
+        }
+        @keyframes click-heart-anim {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+        }
         @media (max-width: 600px) {
-            .headline {
-                font-size: 12vw; /* Auf Mobilgeräten etwas größere Schrift im Verhältnis zur Breite */
-            }
+            #kitty { width: 80px; height: 80px; }
+            #datenbox { font-size: 1em; padding: 1em; }
+            .menuleiste { gap: 10px; padding: 15px 0; }
+            .menupunkt { padding: 6px 10px; font-size: 0.9em; }
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 1em;
+            color: #7a5580;
+            font-weight: bold;
+            text-align: center;
+            width: 100%; 
+            box-sizing: border-box; 
+            padding: 0 10px; 
+        }
+        .footer-daten-active {
+            text-align: center; 
+            margin-left: 0; 
+            margin-right: 0;
         }
     </style>
 </head>
 <body>
 
-    <div class="headline-container">
-        <h1 class="headline">
-           DU FOTZE
-        </h1>
+    <div id="welcomeOverlay">
+        Willkommen, meine Liebe ❤️
     </div>
 
+    <div class="background-heart-container" id="backgroundHearts">
+    </div>
+
+    <nav class="menuleiste">
+        <button class="menupunkt active" id="spruecheTab" onclick="zeigeTab('sprueche')">Sprüche</button>
+        <button class="menupunkt" id="datenTab" onclick="zeigeTab('daten')">Daten</button>
+        <button class="menupunkt" id="bilderTab" onclick="zeigeTab('bilder')">Bilder</button>
+        <button class="menupunkt" id="faktenTab" onclick="zeigeTab('fakten')">Fakten</button>
+        <button class="menupunkt" id="sudokuTab" onclick="zeigeTab('sudoku')">Sudoku</button>
+        <button class="menupunkt" id="musikTab" onclick="zeigeTab('musik')">Musik</button> 
+        <button class="menupunkt" id="plaeneTab" onclick="zeigeTab('plaene')">Pläne</button>
+    </nav>
+    
+    <div id="counter-area">
+        <span id="lovecounter"></span>
+    </div>
+    <div class="content-container">
+        <div id="spruecheContent" class="tab-content active">
+            <h1>Drück auf den Knopf, mein Herz 😊</h1>
+            <div id="text">Klick unten auf den Button!</div> 
+            <button class="spruch-btn" onclick="zeigeZufallstext()">Klick mich!</button> 
+        </div>
+        
+        <div id="datenContent" class="tab-content">
+            <h1>Unsere Daten</h1>
+            <div id="datenbox">
+                <p><b>22.08.2025</b> An diesem Tag haben wir angefangen miteinander zu schreiben. An diesem Tag habe ich bereits den Funken gespürt und wusste, ich will dich um alles in der Welt.</p>
+                <p><b>14.09.2025</b> Dieses Datum ist das Datum von unserem ersten Treffen. Es war so spontan, aber wir haben richtig gespürt wie gut wir uns tun. Wie gern ich dich schon da geküsst hätte. Es war ein wunderschöner warmer Tag. Den werd ich niemals vergessen können.</p>
+                <p><b>15.09.2025</b> Dieses Datum hat nur ein wichtiges Zitat <i>"aich wen juckts"</i>. Es ging um Pokémon.</p>
+                <p><b>24.09.2025</b> Da hast du <i>"Fuck ass Pokémon Sticker"</i> gesagt.</p>
+                <p><b>27.09.2025</b> Das ist der Tag an dem du meine Liebe (wenn auch nur im Halbschlaf) erwidert hast. Ein so schöner Abend. Ich werde das Gefühl von Freude, Panik und Angst niemals vergessen. Ich war panisch, weil ich nicht wusste wie ich reagieren soll tbh. Und Angst vor dem, was alles auf uns zukommt, gepaart mit Neugier und Vorfreude.</p>
+                <p><b>04.10.2025</b> Unser zweites Treffen. Unser erster Kuss. Unsere ersten intimen Momente. Nicht viele Worte, umso mehr Gefühle. Genieß es. Ich liebe Dich.</p>
+                <p><b>05.10.2025</b> Unser Abschied, so viel Emotionen, so viel Vorfreude, so viel Trauer. Den Tränen nah und doch am lächeln. Ein echt schöner Abschied (können Abschiede schön sein?)</p>
+            </div>
+        </div>
+
+        <div id="bilderContent" class="tab-content">
+            <h1>Bilder</h1>
+            <img class="galerie-bild" src="gemeinsam.jpeg" alt="">
+            <img class="galerie-bild" src="schwamm.jpeg" alt="">
+            <img class="galerie-bild" src="ramen.jpeg" alt="">
+            <img class="galerie-bild" src="liebe.jpeg" alt="">
+            <img class="galerie-bild" src="geschenke.jpeg" alt="">
+            <img class="galerie-bild" src="ersti.jpeg" alt=" ">
+            <img class="galerie-bild" src="247.jpeg" alt="️">
+            </div>
+
+        <div id="faktenContent" class="tab-content">
+            <h1 id="faktenTitel">Dein täglicher Fakt: Lade Wikipedia</h1>
+            
+            <iframe id="faktenIframe" 
+                    src="" 
+                    style="width: 90%; max-width: 900px; height: 600px; border: 2px solid #e55381; border-radius: 16px; margin-top: 15px;">
+            </iframe>
+            
+            <p style="margin-top: 20px; color: #7a5580;">
+                Komm morgen wieder für den nächsten Fakt!
+            </p>
+        </div>
+        <div id="sudokuContent" class="tab-content">
+            <h1>Sudoku-Zeit! Viel Spaß, meine Liebe 🥰</h1>
+            
+            <iframe id="sudokuIframe" 
+                    src="https://sudoku.com/de" 
+                    style="width: 95%; max-width: 1000px; height: 750px; border: 2px solid #e55381; border-radius: 16px; margin-top: 15px;">
+            </iframe>
+            
+            <p style="margin-top: 20px; color: #7a5580;">
+                Wähle einfach deine Schwierigkeit im Fenster und starte!
+            </p>
+        </div>
+        <div id="musikContent" class="tab-content">
+            <h1>Hör rein! Deine Lieblingsmusik 🎶</h1>
+            
+            <div style="width: 95%; max-width: 700px; margin-top: 15px;">
+                <iframe data-testid="embed-iframe" style="border-radius:12px" 
+                        src="https://open.spotify.com/embed/playlist/5vNo2iqXaHOV4aFu3DRrdr?utm_source=generator" 
+                        width="100%" height="352" frameBorder="0" allowfullscreen="" 
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                        loading="lazy">
+                </iframe>
+            </div>
+
+            <p style="margin-top: 25px; color: #7a5580; font-size: 1.1em;">
+                Drücke auf Play und genieße die Musik!
+            </p>
+            
+            <a href="https://open.spotify.com/embed/track/$4" target="_blank" 
+               style="text-decoration: none; margin-top: 10px;">
+                <button class="spruch-btn" style="background: #7a5580;">
+                    In neuem Fenster suchen 🔎
+                </button>
+            </a>
+        </div>
+        <div id="plaeneContent" class="tab-content">
+            <h1>Pläne</h1>
+            <p style="text-align:center; color:#7a5580; font-size:1.2em; margin-top:20px;">Hier kommt bald unsere Bucket List hin!</p>
+        </div>
+        </div>
+    
+    <div id="cat-container">
+        <img id="kitty" src="hello-kitty.png" alt="Hello Kitty">
+    </div>
+    
+    <footer>Für dich von Mervan 💜</footer>
+    
+    <script>
+        // =========================================================================
+        // JAVASCRIPT LOGIK
+        // =========================================================================
+
+        // --- 1. ECHTZEIT-COUNTER LOGIK (STARTDATUM WIE URSPRÜNGLICH GEWÜNSCHT) ---
+        // Dies ist das Datum für den "Wie lange sind wir zusammen" Zähler!
+        const COUNTER_START_DATE = new Date('2025-08-22T00:00:00'); 
+
+        function updateLoveCounter() {
+            const now = new Date();
+            const diff = now.getTime() - COUNTER_START_DATE.getTime(); // NUTZT DAS TIMER-DATUM
+
+            if (diff < 0) {
+                 document.getElementById('lovecounter').textContent = "Bald ist es soweit!";
+                 return;
+            }
+
+            const msPerSecond = 1000;
+            
+            let totalSeconds = Math.floor(diff / msPerSecond);
+            let seconds = totalSeconds % 60;
+
+            let totalMinutes = Math.floor(totalSeconds / 60);
+            let minutes = totalMinutes % 60;
+
+            let totalHours = Math.floor(totalMinutes / 60);
+            let hours = totalHours % 24;
+
+            // --- Monats- und Tagesberechnung für saubere Anzeige ---
+            let years = now.getFullYear() - COUNTER_START_DATE.getFullYear();
+            let months = now.getMonth() - COUNTER_START_DATE.getMonth();
+            let days = now.getDate() - COUNTER_START_DATE.getDate();
+
+            if (days < 0) {
+                months--;
+                const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                days += lastMonth;
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+            // --- Ende Monats- und Tagesberechnung ---
+            
+            const counterText = 
+                    `${years} Jahr${years !== 1 ? 'e' : ''}, ` +
+                    `${months} Monat${months !== 1 ? 'e' : ''}, ` +
+                    `${days} Tag${days !== 1 ? 'e' : ''}, ` + 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            document.getElementById('lovecounter').textContent = counterText;
+        }
+        
+        setInterval(updateLoveCounter, 1000); 
+
+        // =========================================================================
+        // --- 2. FAKTEN LOGIK (STARTDATUM IST HEUTE, 27. OKTOBER 2025) ---
+        // Dies ist das Datum, ab dem die Fakten chronologisch gezählt werden!
+        // =========================================================================
+        const FAKTEN_START_DATE = new Date('2025-10-27T00:00:00'); 
+        
+        const faktenTexte = [
+            // Tag 1 (Index 0)
+            { titel: "Fener💛💙", link: "https://de.wikipedia.org/wiki/Fenerbahçe_SK" },
+            // Tag 2 (Index 1)
+            { titel: "Pädagogik", link: "https://de.wikipedia.org/wiki/Pädagogik" },
+            // Tag 3 (Index 2)
+            { titel: "Istanbul", link: "https://de.wikipedia.org/wiki/Istanbul" },
+            // Tag 4 (Index 3)
+            { titel: "Deine große Liebe ", link: "https://de.wikipedia.org/wiki/Geld" },
+            // Tag 5 (Index 4)
+            { titel: "Türkiye 🇹🇷", link: "https://de.wikipedia.org/wiki/Türkei" },
+            // Tag 6 (Index 5)
+            { titel: "Rosenwasser", link: "https://de.wikipedia.org/wiki/Rosenwasser" },
+            // Tag 7 (Index 6)
+            { titel: "Kurdistan", link: "https://de.wikipedia.org/wiki/Kurdistan" },
+            // Tag 8 (Index 7)
+            { titel: "Das unendliche Meer", link: "https://de.wikipedia.org/wiki/Meer" },
+            // Tag 9 (Index 8)
+            { titel: "Samsun", link: "https://de.wikipedia.org/wiki/Samsun" },
+            // Tag 10 (Index 9)
+            { titel: "Balıkesir", link: "https://de.wikipedia.org/wiki/Balıkesir" },
+            // Tag 11 (Index 10)
+            { titel: "Sudoku-Fakt für die beste Sudoku Spielerin der Welt", link: "https://de.wikipedia.org/wiki/Sudoku" },
+            // Tag 12 (Index 11)
+            { titel: "Rummikub", link: "https://de.wikipedia.org/wiki/Rummikub" },
+            // Tag 13 (Index 12)
+            { titel: "Kinder Schoko-Bons", link: "https://de.wikipedia.org/wiki/Kinder_Schoko-Bons" },
+            // Tag 14 (Index 13)
+            { titel: "Rosa", link: "https://de.wikipedia.org/wiki/Rosa_(Farbe)" },
+            // Tag 15 (Index 14)
+            { titel: "Lilien", link: "https://de.wikipedia.org/wiki/Lilien" },
+            // Tag 16 (Index 15) - Dein alter End-Fakt
+            { titel: "Du", link: "https://de.wikipedia.org/wiki/Gl%C3%BCck" },
+            
+            // 🆕 NEUE FAKTEN HIER EINGEFÜGT (Tag 17 bis Tag 31) 🆕
+            { titel: "Meerjungfrauen", link: "https://de.wikipedia.org/wiki/Meerjungfrau" },
+            { titel: "Die Insel Lesbos", link: "https://de.wikipedia.org/wiki/Lesbos" },
+            { titel: "Katzen", link: "https://de.wikipedia.org/wiki/Katze_(Begriffskl%C3%A4rung)" },
+            { titel: "Der kleine Prinz", link: "https://de.wikipedia.org/wiki/Der_kleine_Prinz" },
+            { titel: "Muscheln", link: "https://de.wikipedia.org/wiki/Muscheln" },
+            { titel: "Gold", link: "https://de.wikipedia.org/wiki/Portal:Minerale/Gold" },
+            { titel: "TikTok", link: "https://de.wikipedia.org/wiki/TikTok" },
+            { titel: "Mineralwasser", link: "https://de.wikipedia.org/wiki/Mineralwasser" },
+            { titel: "Marienkäfer", link: "https://de.wikipedia.org/wiki/Marienk%C3%A4fer" },
+            { titel: "Kuru Fasulye", link: "https://tr.wikipedia.org/wiki/Kuru_fasulye" },
+            { titel: "Israel", link: "https://de.wikipedia.org/wiki/Israel" },
+            { titel: "Mango", link: "https://de.wikipedia.org/wiki/Mango" },
+            { titel: "Baum", link: "https://de.wikipedia.org/wiki/Baum" },
+            { titel: "Nutella", link: "https://de.wikipedia.org/wiki/Nutella" },
+            { titel: "Köln", link: "https://de.wikipedia.org/wiki/K%C3%B6ln" }
+            // ⬆️ HIER ENDEN DIE NEUEN FAKTEN ⬆️
+        ];
+
+        function zeigeTagesfakt() {
+            const ONE_DAY = 1000 * 60 * 60 * 24;
+            const diffTime = new Date().getTime() - FAKTEN_START_DATE.getTime(); // NUTZT DAS FAKTEN-DATUM
+            
+            // Wenn der Zähler noch nicht gestartet ist (Startdatum liegt in der Zukunft)
+            if (diffTime < 0) {
+                 document.getElementById('faktenTitel').textContent = "Der Fakten-Start steht bevor! 🎉";
+                 document.getElementById('faktenIframe').src = "https://de.wikipedia.org/wiki/Neugierde";
+                 document.querySelector('#faktenContent p').textContent = "Komm am Startdatum wieder!";
+                 return;
+            } 
+            
+            // Berechnet die Anzahl der vollen Tage seit dem Fakten-Start (Index 0 = Tag 1)
+            const diffDays = Math.floor(diffTime / ONE_DAY); 
+            
+            const anzahlFakten = faktenTexte.length;
+
+            if (diffDays >= anzahlFakten) {
+                // Wenn der Tag-Index die Anzahl der Fakten überschreitet (Liste aufgebraucht)
+                document.getElementById('faktenTitel').textContent = "Alle aktuellen Fakten gesehen! 🎉";
+                document.getElementById('faktenIframe').src = "https://de.wikipedia.org/wiki/Liebe"; // Standard-End-Fakt
+                document.querySelector('#faktenContent p').textContent = "Kein Problem! Mervan wird bald neue Überraschungen hinzufügen! 😉";
+            } else {
+                // Zeigt den Fakt an, der dem Tag exakt entspricht
+                const heutigerFakt = faktenTexte[diffDays]; 
+                
+                document.getElementById('faktenTitel').textContent = `Dein täglicher Fakt: ${heutigerFakt.titel}`;
+                document.getElementById('faktenIframe').src = heutigerFakt.link;
+                document.querySelector('#faktenContent p').textContent = "Komm morgen wieder für den nächsten Fakt!";
+            }
+        }
+
+        // --- 3. TAB-LOGIK (UNVERÄNDERT) ---
+        let aktuellerTab = 'sprueche';
+
+        function zeigeTab(neuerTabName) {
+            if (aktuellerTab === neuerTabName) return; 
+
+            const alterContent = document.getElementById(aktuellerTab + 'Content');
+            const neuerContent = document.getElementById(neuerTabName + 'Content');
+            const tabs = document.querySelectorAll('.menupunkt');
+            const footer = document.querySelector('footer');
+
+            if (alterContent) {
+                alterContent.classList.remove('active');
+            }
+            
+            if (neuerContent) {
+                 neuerContent.classList.add('active');
+            }
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(neuerTabName + 'Tab').classList.add('active');
+
+            if (neuerTabName === 'daten' || neuerTabName === 'sudoku' || neuerTabName === 'fakten' || neuerTabName === 'musik') {
+                footer.classList.add('footer-daten-active');
+            } else {
+                footer.classList.remove('footer-daten-active');
+            }
+
+            aktuellerTab = neuerTabName;
+        }
+        
+        // Initialer Aufruf beim Laden der Seite
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLoveCounter(); 
+            zeigeTagesfakt(); 
+            
+            const overlay = document.getElementById('welcomeOverlay');
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 1500);
+            }, 2000);
+            
+            startDynamicHearts();
+            bounceKitty();
+        });
+
+        // --- 4. DYNAMISCHE HERZEN LOGIK (unverändert) ---
+        function generateRandomHeart() {
+            const container = document.getElementById('backgroundHearts');
+            const heart = document.createElement('span');
+            heart.className = 'dynamic-heart';
+            heart.textContent = '♥';
+            
+            const x = Math.random() * 100; 
+            const y = Math.random() * 100;
+            const size = Math.floor(Math.random() * 30) + 25; 
+            const duration = Math.floor(Math.random() * 2000) + 4000; 
+            
+            heart.style.left = x + '%';
+            heart.style.top = y + '%';
+            heart.style.fontSize = size + 'px';
+            heart.style.animationDuration = duration + 'ms';
+            
+            container.appendChild(heart);
+            
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+        
+        let heartInterval;
+        function startDynamicHearts() {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(generateRandomHeart, Math.random() * 2000); 
+            }
+            heartInterval = setInterval(() => {
+                generateRandomHeart();
+            }, Math.random() * 500 + 500); 
+        }
+        
+        // --- 5. KLICK-HERZ-EFFEKT (unverändert) ---
+        document.addEventListener('click', (e) => {
+            const heart = document.createElement('span');
+            heart.className = 'click-heart';
+            heart.textContent = '💜'; 
+            
+            heart.style.left = e.clientX + 'px';
+            heart.style.top = (e.clientY + window.scrollY) + 'px'; 
+
+            document.body.appendChild(heart);
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        });
+
+        // --- 6. SPRÜCHE LOGIK (HIER MUSST DU DEINE 157 SPRÜCHE EINFÜGEN!) ---
+        const texte = [
+            // ❗❗ BITTE HIER ALLE DEINE SPRÜCHE WIEDER EINFÜGEN ❗❗
+            "Du bist mein Lieblingsmensch.",
+            "Ich liebe es, wenn du lachst.",
+            "Du bist genug. Immer."
+        ];
+        function zeigeZufallstext() {
+            const index = Math.floor(Math.random() * texte.length);
+            document.getElementById('text').textContent = texte[index];
+        }
+
+        // --- 7. BOUNCING KITTY LOGIK (unverändert) ---
+        const bilder = [
+            "hello-kitty.png", "miffy.png", "dylan.jpg", "tiger.png", "hai.jpg", "panda.jpg", 
+            "snoopy.jpg", "fenerbahce.jpg", "kd.png", "fler.webp", "freeway.jpg"
+        ];
+        const kitty = document.getElementById("kitty");
+        function getKittySize() {
+            const style = window.getComputedStyle(kitty);
+            return { w: parseInt(style.width, 10), h: parseInt(style.height, 10) };
+        }
+        let {w: kittyW, h: kittyH} = getKittySize();
+        let x = Math.random() * (window.innerWidth - kittyW);
+        let y = Math.random() * (window.innerHeight - kittyH);
+        let dx = 2.5, dy = 2;
+        let dirX = Math.random() > 0.5 ? 1 : -1;
+        let dirY = Math.random() > 0.5 ? 1 : -1;
+        function wechselBild() {
+            let aktuell = kitty.src.split("/").pop();
+            let neuesBild;
+            do {
+                neuesBild = bilder[Math.floor(Math.random() * bilder.length)];
+            } while (neuesBild === aktuell && bilder.length > 1);
+            kitty.src = neuesBild;
+        }
+        function bounceKitty() {
+            let {w: kittyW, h: kittyH} = getKittySize();
+            const maxW = window.innerWidth;
+            const maxH = window.innerHeight;
+            let bounced = false;
+            x += dx * dirX;
+            y += dy * dirY;
+            if (x <= 0) {
+                x = 0; dirX = 1; kitty.style.transform = "scaleX(1)"; bounced = true;
+            }
+            if (x + kittyW >= maxW) {
+                x = maxW - kittyW; dirX = -1; kitty.style.transform = "scaleX(-1)"; bounced = true;
+            }
+            if (y <= 0) {
+                y = 0; dirY = 1; bounced = true;
+            }
+            if (y + kittyH >= maxH) {
+                y = maxH - kittyH; dirY = -1; bounced = true;
+            }
+            if (bounced) wechselBild();
+            kitty.style.left = x + "px";
+            kitty.style.top = y + "px";
+            requestAnimationFrame(bounceKitty);
+        }
+        window.addEventListener("resize", () => {
+            let {w: newW, h: newH} = getKittySize();
+            x = Math.min(x, window.innerWidth - newW);
+            y = Math.min(y, window.innerHeight - newH);
+        });
+    </script>
 </body>
 </html>
